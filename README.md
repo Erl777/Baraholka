@@ -14,3 +14,13 @@ npm run serve
 ```
 npm run build
 ```
+
+## Server setup
+```
+cd/server npm install
+```
+
+## Server start
+```
+node app
+```
