@@ -1,13 +1,26 @@
 <template>
   <div class="nav">
     <router-link :to="{ name: 'Home'}">Main</router-link>
-    <router-link :to="{name: 'Login'}">Login</router-link>
+    <router-link v-if="!this.$store.state.token" :to="{name: 'Login'}">Login</router-link>
+    <div v-else>
+      <a href="#" @click.prevent="logout">Выйти</a>
+      <router-link to="/profile">Личный кабинет</router-link>
+    </div>
+
   </div>
 </template>
 
 <script>
 export default {
-name: "Header"
+  name: "Header",
+  methods: {
+    logout() {
+      this.$store.commit('clearToken');
+      this.$store.commit('clearUserFromStore');
+      localStorage.removeItem('token');
+      this.$router.push('/');
+    }
+  }
 }
 </script>
 

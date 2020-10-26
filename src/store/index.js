@@ -6,11 +6,21 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    user: null
+    user: null,
+    token: null
   },
   mutations: {
     setUserToStore(state, payload){
       state.user = payload
+    },
+    clearToken(state){
+      state.token = null;
+    },
+    clearUserFromStore(state){
+      state.user = null
+    },
+    setToken(state, payload){
+      state.token = payload;
     }
   },
   actions: {

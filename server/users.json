@@ -1,19 +1,7 @@
 [
   {
-  "id":1,
-  "name":"Tom"
-  },
-  {
-    "id":2,
-    "name":"Bob"
-  },
-  {
-    "id":3,
-    "name":"Alice"
-  },
-  {
     "id": "qwer@qwer",
-    "name":"Tom",
-    "password": "12345"
+    "password": "12345",
+    "token": "0576e81c7e568767b205"
   }
 ]

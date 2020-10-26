@@ -14,6 +14,18 @@ export default {
                         return `Email ${email} не найден`
                     });
         },
+        async getUserByToken({dispatch, commit}, token) {
+            return await api
+                .get("/users/token/" + token )
+                .then(response => {
+                    console.log("response", response);
+                    return response;
+                })
+                .catch(error => {
+                    console.log("error", error);
+                    return `Email ${token} не найден`
+                });
+        },
         async register({dispatch, commit}, {email, password, name}) {
             try {
                 // await firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -28,13 +40,13 @@ export default {
             }
         },
         // получение id пользователя из firebase
-        getUid(){
+        // getUid(){
             // const user = firebase.auth().currentUser;
             // return user ? user.uid : null
-        },
-        async logout({commit}){
+        // },
+        // async logout({commit}){
             // await firebase.auth().signOut();
             // commit('clearInfo')
-        }
+        // }
     }
 }

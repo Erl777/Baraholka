@@ -1,7 +1,7 @@
 <template>
   <div class="post">
     <p class="post__title">
-      Заголовок объявления
+      Заголовок
 <!--      <router-link to="/page/id"/>-->
     </p>
     <p class="post__price">

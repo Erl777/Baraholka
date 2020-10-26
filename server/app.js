@@ -2,11 +2,18 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var fs = require("fs");
+const crypto = require('crypto');
 
 var app = express();
 var jsonParser = bodyParser.json();
 
 //app.use(express.static("../" + __dirname + "/public")); // ??????
+
+// рандомная генерация строки (токена)
+crypto.randomBytes(10, (err, buf) => {
+    if (err) throw err;
+    console.log(`${buf.length} bytes of random data: ${buf.toString('hex')}`);
+});
 
 // Избавился от CORS политики
 app.use(function (req, res, next) {
@@ -39,7 +46,7 @@ app.get("/api/users", function(req, res){
 app.get("/api/users/:id", function(req, res){
 
     var id = req.params.id; // получаем id
-    console.log(id);
+    // console.log(id);
     var content = fs.readFileSync("users.json", "utf8");
     var users = JSON.parse(content);
     var user = null;
@@ -58,6 +65,31 @@ app.get("/api/users/:id", function(req, res){
         res.status(404).send();
     }
 });
+
+// получение одного пользователя по token
+app.get("/api/users/token/:token", function(req, res){
+
+    var token = req.params.token; // получаем token
+    // console.log(token);
+    var content = fs.readFileSync("users.json", "utf8");
+    var users = JSON.parse(content);
+    var user = null;
+    // находим в массиве пользователя по id
+    for(var i=0; i<users.length; i++){
+        if(users[i].token==token){
+            user = users[i];
+            break;
+        }
+    }
+    // отправляем пользователя
+    if(user){
+        res.send(user);
+    }
+    else{
+        res.status(404).send();
+    }
+});
+
 // получение отправленных данных
 app.post("/api/users", jsonParser, function (req, res) {
 

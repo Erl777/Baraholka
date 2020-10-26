@@ -49,18 +49,18 @@ export default {
     formValidation(){
       let result = true;
       if(this.formData.email === ''){
-        this.emailErrorMessage = "Заполните поле email"
-        this.showEmailError = true
+        this.emailErrorMessage = "Заполните поле email";
+        this.showEmailError = true;
         result = false
       }
       if(this.formData.password === ''){
-        this.passwordErrorMessage = 'Заполните поле пароль'
-        this.showPasswordError = true
+        this.passwordErrorMessage = 'Заполните поле пароль';
+        this.showPasswordError = true;
         result = false
       }
       if(this.formData.password.length < 4){
-        this.passwordErrorMessage = 'Пароль должен быть больше 4рех символов'
-        this.showPasswordError = true
+        this.passwordErrorMessage = 'Пароль должен быть больше 4рех символов';
+        this.showPasswordError = true;
         result = false
       }
       return result;
@@ -69,7 +69,7 @@ export default {
 
       if(this.formValidation()){
 
-        const userData = await this.$store.dispatch('login', this.formData)
+        const userData = await this.$store.dispatch('login', this.formData);
         // console.log(userData)
         if(typeof(userData) === 'object'){
 
@@ -78,7 +78,7 @@ export default {
             this.$router.push('/profile')
           }
           else {
-            this.passwordErrorMessage = 'Не верный пароль'
+            this.passwordErrorMessage = 'Не верный пароль';
             this.showPasswordError = true
           }
 
@@ -91,8 +91,9 @@ export default {
       }
     },
     setUser(data){
-      this.$store.commit('setUserToStore', data)
-      localStorage.setItem('Uid', data.id);
+      this.$store.commit('setUserToStore', data);
+      this.$store.commit('setToken', data.token);
+      localStorage.setItem('token', data.token);
       // localStorage.getItem('id')
     }
   }
