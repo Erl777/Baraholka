@@ -1,0 +1,47 @@
+[
+  {
+    "postId": "1",
+    "title": "Заголовок",
+    "price": "1000",
+    "img": "../logo.png",
+    "description": "qwerqwerqwerqwerqwer",
+    "author": "Man",
+    "views": "0"
+  },
+  {
+    "postId": "2",
+    "title": "Заголовок2",
+    "price": "2000",
+    "img": "../logo.png",
+    "description": "qwerqwerqwerqwerqwer",
+    "author": "Man",
+    "views": "0"
+  },
+  {
+    "postId": "3",
+    "title": "Заголовок3",
+    "price": "3000",
+    "img": "../logo.png",
+    "description": "qwerqwerqwerqwerqwer",
+    "author": "Man",
+    "views": "0"
+  },
+  {
+    "postId": "4",
+    "title": "Заголовок4",
+    "price": "4000",
+    "img": "../logo.png",
+    "description": "qwerqwerqwerqwerqwer",
+    "author": "Man",
+    "views": "0"
+  },
+  {
+    "postId": "5",
+    "title": "Заголовок5",
+    "price": "5000",
+    "img": "../logo.png",
+    "description": "qwerqwerqwerqwerqwer",
+    "author": "Man",
+    "views": "0"
+  }
+]

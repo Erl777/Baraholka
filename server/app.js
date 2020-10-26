@@ -35,10 +35,10 @@ app.use(function (req, res, next) {
     next();
 });
 
-// получение списка данных
-app.get("/api/users", function(req, res){
+// получение списка постов
+app.get("/api/posts", function(req, res){
 
-    var content = fs.readFileSync("users.json", "utf8");
+    var content = fs.readFileSync("posts.json", "utf8");
     var users = JSON.parse(content);
     res.send(users);
 });

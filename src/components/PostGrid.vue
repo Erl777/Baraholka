@@ -1,30 +1,25 @@
 <template>
   <div class="post">
     <p class="post__title">
-      Заголовок
+      {{title}}
 <!--      <router-link to="/page/id"/>-->
     </p>
     <p class="post__price">
-      Цена: 1000
+      Цена: {{ price | currency }}
     </p>
     <div class="post__img-container">
-      <img class="post__img" src="../assets/logo.png" alt="">
+      <img class="post__img" :src="img" alt="">
     </div>
     <p class="post__description">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-      ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
-      in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-      sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-      anim id est laborum.
+      {{description}}
     </p>
   </div>
 </template>
 
 <script>
 export default {
-  name: "PostGrid"
+  name: "PostGrid",
+  props: ['title', 'price', 'description', 'img'],
 }
 </script>
 

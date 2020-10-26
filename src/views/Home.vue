@@ -1,12 +1,21 @@
 <template>
   <div class="home">
 
+<!--      <Loader>-->
+
 <!--    Отдельным компонентом-->
     <div class="post-actions">
 
     </div>
 
-    <PostGrid v-for="post in 6" />
+      <PostGrid v-for="(post, index ) in posts"
+                :title="post.title"
+                :price="post.price"
+                :description="post.description"
+                :img="post.img"
+                :key="index"
+      />
+
   </div>
 </template>
 
@@ -16,7 +25,22 @@ export default {
   name: 'Home',
   components: {
     PostGrid
-  }
+  },
+    data(){
+      return{
+        allPosts: [],
+          loading: true
+      }
+    },
+    async beforeMount(){
+      const posts = await this.$store.dispatch('getPosts');
+      this.allPosts = posts.data;
+    },
+    computed: {
+      posts(){
+          return this.allPosts;
+      }
+    }
 }
 </script>
 
