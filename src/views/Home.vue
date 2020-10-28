@@ -1,57 +1,72 @@
 <template>
   <div class="home">
 
-<!--      <Loader>-->
+    <PostsActions @changeSearchName="searchByName" />
 
-<!--    Отдельным компонентом-->
-    <div class="post-actions">
+    <div class="posts-container">
+
+        <Loader v-if="loading" />
+
+        <PostGrid v-else v-for="(post, index ) in posts"
+                  :title="post.title"
+                  :price="post.price"
+                  :description="post.description"
+                  :img="post.img"
+                  :postId="post.postId"
+                  :key="index"
+        />
 
     </div>
 
-      <PostGrid v-for="(post, index ) in posts"
-                :title="post.title"
-                :price="post.price"
-                :description="post.description"
-                :img="post.img"
-                :key="index"
-      />
 
   </div>
 </template>
 
 <script>
+import Loader from "../components/Loader";
 import PostGrid from "@/components/PostGrid";
+import PostsActions from "../components/PostsActions";
+import {mapGetters} from 'vuex';
 export default {
   name: 'Home',
   components: {
-    PostGrid
+    PostGrid,
+      Loader,
+      PostsActions
   },
     data(){
       return{
         allPosts: [],
-          loading: true
+        loading: true,
+        filterArgument: '',
       }
     },
     async beforeMount(){
-      const posts = await this.$store.dispatch('getPosts');
-      this.allPosts = posts.data;
+        this.allPosts = await this.$store.dispatch('getPosts');
+        this.loading = false;
     },
     computed: {
       posts(){
           return this.allPosts;
-      }
+          // return this.allPosts.filter(item => item.price > this.filterArgument );
+      },
+        ...mapGetters({
+            storePosts: 'getPosts'
+        })
+    },
+    methods: {
+        searchByName(name){
+            console.log(name);
+        }
     }
 }
 </script>
 
 <style scoped>
-  .home{
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-  .post-actions{
-    width: 100%;
-    min-height: 20px;
+  .posts-container{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    column-gap: 15px;
+    row-gap: 15px;
   }
 </style>

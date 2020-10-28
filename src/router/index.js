@@ -44,15 +44,11 @@ const routes = [
     redirect: {name: 'profileDefaultPage'},
     children: [
       {
-        // при совпадении пути с шаблоном /user/:id/profile
-        // в <router-view> компонента User будет показан UserProfile
         path: 'add',
         meta: { auth: true },
         component: () => import('../views/ProfilePages/AddPost')
       },
       {
-        // при совпадении пути с шаблоном /user/:id/posts
-        // в <router-view> компонента User будет показан UserPosts
         path: 'archive',
         meta: { auth: true },
         component: () => import('../views/ProfilePages/Archive')
@@ -80,14 +76,6 @@ const routes = [
       }
     ]
   },
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // }
 ]
 
 const router = new VueRouter({
@@ -104,17 +92,13 @@ router.beforeEach((to, from, next) => {
 
   if (to.matched.some(record => record.meta.auth === true)){
     // если необходима авторизация на странице, то берем токен пользователя
-    console.time("askToken");
     const userToken = localStorage.getItem('token');
-    console.timeEnd("askToken");
 
     if(!store.state.user){
       // подтягиваются данные пользователя если их нет, но есть токен
       // (тот случай, когда пользователь зашел на страницу и у него есть токен)
       (async function () {
-        const userData = await store.dispatch('getUserByToken', userToken);
-        console.log(userData);
-        store.commit('setUserToStore', userData.data) ;
+        await store.dispatch('getUserByToken', userToken);
       }())
 
     }

@@ -1,8 +1,7 @@
 <template>
   <div class="post">
     <p class="post__title">
-      {{title}}
-<!--      <router-link to="/page/id"/>-->
+      <router-link :to="{name: 'PostPage', params: {id: postId}}">{{title}}</router-link>
     </p>
     <p class="post__price">
       Цена: {{ price | currency }}
@@ -19,7 +18,7 @@
 <script>
 export default {
   name: "PostGrid",
-  props: ['title', 'price', 'description', 'img'],
+  props: ['title', 'price', 'description', 'img', 'postId'],
 }
 </script>
 
@@ -29,10 +28,10 @@ export default {
     border-bottom: 2px solid #e7e7e7;
   }
   .post{
-    width: 32.2%;
+    /*width: 32.2%;*/
     box-shadow: 0 0 12px rgba(77, 77, 77, 0.75);
     border-radius: 4px;
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
     &__title{
       width: 100%;
       margin: 0;

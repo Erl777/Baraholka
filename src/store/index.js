@@ -8,7 +8,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     user: null,
-    token: null
+    token: null,
   },
   mutations: {
     setUserToStore(state, payload){
@@ -22,12 +22,12 @@ export default new Vuex.Store({
     },
     setToken(state, payload){
       state.token = payload;
-    }
+    },
   },
   actions: {
   },
   modules: {
     auth,
     posts
-  }
+  },
 })

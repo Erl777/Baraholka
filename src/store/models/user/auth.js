@@ -1,4 +1,5 @@
 import api from '@/api';
+import store from "../../index";
 
 export default {
     actions: {
@@ -19,6 +20,7 @@ export default {
                 .get("/users/token/" + token )
                 .then(response => {
                     console.log("response", response);
+                    store.commit('setUserToStore', response.data);
                     return response;
                 })
                 .catch(error => {
