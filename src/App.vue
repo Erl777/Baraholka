@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header />
+    <Header :key="headerKey" />
 
     <router-view/>
 
@@ -47,14 +47,23 @@ body{
 
 <script>
 import Header from "@/components/Header";
+import {mapGetters} from 'vuex';
   export default {
+    name: 'App',
     components:{
       Header
+    },
+    computed: {
+      ...mapGetters({
+        headerKey: 'getHeaderKey'
+      })
     }
   }
 </script>
 
-<!-- фильтер для постов, добавление полей в базу, разобраться с vuex модулями, принудительная перерисовка шапки
+<!-- фильтер для постов, добавление полей в базу, разобраться с vuex модулями,
+
+    принудительная перерисовка шапки
 
     лоадер, поправил dispatch и commit для токена, фикс разметки товаров, открытие страницы с товаром с главной, заготовка фильтрационного компонента
 -->

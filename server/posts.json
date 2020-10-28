@@ -6,7 +6,8 @@
     "img": "../logo.png",
     "description": "qwerqwerqwerqwerqwer",
     "author": "Man",
-    "views": "0"
+    "views": "0",
+    "rubric": "cars"
   },
   {
     "postId": "2",
@@ -43,5 +44,15 @@
     "description": "qwerqwerqwerqwerqwer",
     "author": "Man",
     "views": "0"
+  },
+  {
+    "postId": "6",
+    "title": "23456",
+    "price": "10000",
+    "img": "../logo.png",
+    "description": "qwerqwerqwerqwerqwer",
+    "author": "Man",
+    "views": "0",
+    "rubric": "cars"
   }
 ]

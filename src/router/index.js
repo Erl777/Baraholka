@@ -86,6 +86,11 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
 
+  // Перерисовываю шапку сайта
+  (async function () {
+    await store.commit('changeHeaderKey');
+  }());
+
   if(!store.state.token){
     store.state.token = localStorage.getItem('token');
   }
