@@ -4,10 +4,12 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import currencyFilter from './filters/currency.filter'
+import dateFilter from './filters/date.filter'
 
 Vue.config.productionTip = false
 
 Vue.filter('currency', currencyFilter);
+Vue.filter('date', dateFilter);
 
 new Vue({
   router,

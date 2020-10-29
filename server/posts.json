@@ -4,10 +4,11 @@
     "title": "Заголовок",
     "price": "1000",
     "img": "../logo.png",
-    "description": "qwerqwerqwerqwerqwer",
-    "author": "Man",
+    "description": "qwerqwerqwerqwerqwerqwe rqwerqwerqwerqwerqwer qwerqwerqwerqwerqwer qwerqwerqwerqwer",
+    "author": "qwer@qwer",
     "views": "0",
-    "rubric": "cars"
+    "rubric": "cars",
+    "created": "1603895090509"
   },
   {
     "postId": "2",
@@ -16,7 +17,8 @@
     "img": "../logo.png",
     "description": "qwerqwerqwerqwerqwer",
     "author": "Man",
-    "views": "0"
+    "views": "0",
+    "created": "1603976721025"
   },
   {
     "postId": "3",
@@ -25,7 +27,8 @@
     "img": "../logo.png",
     "description": "qwerqwerqwerqwerqwer",
     "author": "Man",
-    "views": "0"
+    "views": "0",
+    "created": "1603895090509"
   },
   {
     "postId": "4",
@@ -33,8 +36,9 @@
     "price": "4000",
     "img": "../logo.png",
     "description": "qwerqwerqwerqwerqwer",
-    "author": "Man",
-    "views": "0"
+    "author": "qwer@qwer",
+    "views": "0",
+    "created": "1603895090509"
   },
   {
     "postId": "5",
@@ -43,7 +47,8 @@
     "img": "../logo.png",
     "description": "qwerqwerqwerqwerqwer",
     "author": "Man",
-    "views": "0"
+    "views": "0",
+    "created": "1603895090509"
   },
   {
     "postId": "6",
@@ -53,6 +58,7 @@
     "description": "qwerqwerqwerqwerqwer",
     "author": "Man",
     "views": "0",
-    "rubric": "cars"
+    "rubric": "cars",
+    "created": "1603895090509"
   }
 ]

@@ -42,6 +42,6 @@ export default {
     getters: {
         getPosts: state => {
             return state.posts;
-        }
+        },
     }
 }

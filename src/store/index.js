@@ -37,6 +37,9 @@ export default new Vuex.Store({
   getters: {
     getHeaderKey: state => {
       return state.headerKey
+    },
+    getUser: state => {
+      return state.user
     }
   }
 })

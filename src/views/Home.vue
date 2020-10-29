@@ -17,6 +17,7 @@
                   :description="post.description"
                   :img="post.img"
                   :postId="post.postId"
+                  :created="post.created"
                   :key="index"
         />
 
