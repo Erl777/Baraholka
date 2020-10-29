@@ -140,7 +140,7 @@ export default {
 <style scoped>
   .posts-container{
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: 1fr 1fr 1fr;
     column-gap: 15px;
     row-gap: 15px;
   }

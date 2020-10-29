@@ -3,14 +3,13 @@
 
 <!--    Loader-->
 
-    <h1>Profile</h1>
     <nav class="profile-nav">
+      <router-link to="/profile/posts">Мои объявления</router-link>
       <router-link to="/profile/add">Добавить объявление</router-link>
-      <router-link to="/profile/archive">Archive</router-link>
-      <router-link to="/profile/favourite">Favourite</router-link>
-      <router-link to="/profile/posts">Posts</router-link>
+      <router-link to="/profile/archive">Архив</router-link>
+      <router-link to="/profile/favourite">Избранное</router-link>
       <router-link to="/profile/post/1/edit">Edit</router-link>
-      <router-link to="/profile/settings">Settings</router-link>
+      <router-link to="/profile/settings">Настройки</router-link>
     </nav>
     <router-view></router-view>
   </div>
@@ -26,5 +25,6 @@ export default {
   .profile-nav{
     display: flex;
     justify-content: space-between;
+    margin: 30px 0;
   }
 </style>

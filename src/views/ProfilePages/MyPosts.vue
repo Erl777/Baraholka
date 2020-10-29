@@ -1,13 +1,18 @@
 <template>
   <div>
     <h1>Мои объявления:</h1>
-    <PostLine v-for="(post, index ) in filteredPosts"
+
+    <Loader v-if="authorPosts.length === 0" />
+
+    <PostLine v-else v-for="(post, index ) in filteredPosts"
               :title="post.title"
               :price="post.price"
               :description="post.description"
               :img="post.img"
               :postId="post.postId"
               :created="post.created"
+              :redacting="true"
+              :views="post.views"
               :key="index"
     />
   </div>
@@ -16,10 +21,12 @@
 <script>
   import PostLine from "../../components/PostLine";
   import { mapGetters, mapActions } from 'vuex';
+  import Loader from "@/components/Loader";
 export default {
   name: "MyPosts",
   components: {
-    PostLine
+    PostLine,
+    Loader
   },
   computed: {
     ...mapGetters({

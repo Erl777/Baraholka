@@ -67,6 +67,7 @@ const routes = [
       {
         path: 'post/:id/edit',
         meta: { auth: true },
+        name: 'PostEdit',
         component: () => import('../views/ProfilePages/PostEdit')
       },
       {
