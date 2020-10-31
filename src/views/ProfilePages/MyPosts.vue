@@ -4,6 +4,8 @@
 
     <Loader v-if="authorPosts.length === 0" />
 
+    <p v-else-if="filteredPosts.length === 0">Объявнений нет</p>
+
     <PostLine v-else v-for="(post, index ) in filteredPosts"
               :title="post.title"
               :price="post.price"
@@ -13,6 +15,8 @@
               :created="post.created"
               :redacting="true"
               :views="post.views"
+              :deactivate="true"
+              :delete-post="false"
               :key="index"
     />
   </div>
@@ -35,7 +39,7 @@ export default {
       }),
     filteredPosts(){
       if(!(this.authorPosts.length > 0)) this.getAllPosts();
-      return this.authorPosts.filter(el => el.author.includes(this.currentUser.id) );
+      return this.authorPosts.filter(el => el.author.includes(this.currentUser.id) ).filter(el => el.active === true);
     }
   },
   methods: {

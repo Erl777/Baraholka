@@ -20,7 +20,15 @@
         {{created | date}}
       </p>
 
-      <router-link :to="{name: 'PostEdit', params: {id: postId}}" class="post__redacting" v-if="redacting" title="Редактировать">
+      <div class="buttons" v-if="deactivate || deletePost">
+        <button v-if="activate" @click.prevent="activatePostHandler" type="button" class="activate">Активировать</button>
+        <button v-if="deactivate" @click.prevent="deactivatePostHandler" type="button" class="deactivate">Деактивировать</button>
+        <button v-if="deletePost" @click.prevent="deletePostHandler" type="button" class="delete">Удалить</button>
+      </div>
+
+      <router-link :to="{name: 'PostEdit', params: {id: postId}}"
+                   class="post__redacting"
+                   v-if="redacting" title="Редактировать">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
              viewBox="0 0 469.336 469.336" style="enable-background:new 0 0 469.336 469.336;width: 20px; height: 20px" xml:space="preserve">
           <path d="M456.836,76.168l-64-64.054c-16.125-16.139-44.177-16.17-60.365,0.031L45.763,301.682
@@ -57,7 +65,55 @@
 <script>
 export default {
   name: "PostGrid",
-  props: ['title', 'price', 'description', 'img', 'postId', 'created', 'redacting', 'views'],
+  props: {
+    title: String,
+    price: String,
+    description: String,
+    img: String,
+    postId: String,
+    created: String,
+    redacting: {
+      type: Boolean,
+      default: false
+    },
+    views: String,
+    deactivate: {
+      type: Boolean,
+      default: false
+    },
+    activate: {
+      type: Boolean,
+      default: false
+    },
+    deletePost: {
+      type: Boolean,
+      default: false
+    },
+  },
+  methods: {
+    deletePostHandler(){
+      if(confirm(`Вы действительно хотите удалить ${this.title}? Это действие нельзя будет отменить!`)){
+        console.log(`Удаляю пост ${this.title}`)
+      }
+    },
+    async deactivatePostHandler(){
+      if(confirm(`Вы действительно хотите деактивировать ${this.title}? Объявление будет скрыто от других пользователей и перемещенно в арихив`)){
+        console.log(this.postId);
+        await this.$store.dispatch('deactivatePost', this.postId);
+        this.reloadPosts();
+      }
+    },
+    async activatePostHandler(){
+      if(confirm(`Вы действительно хотите активировать ${this.title}? Объявление будет скрыто от других пользователей и перемещенно в арихив`)){
+        console.log(this.postId);
+        await this.$store.dispatch('activatePost', this.postId);
+        this.reloadPosts();
+      }
+    },
+    async reloadPosts(){
+      await this.$store.dispatch('getPosts');
+    }
+  }
 }
 </script>
 
@@ -72,6 +128,8 @@ export default {
     border-radius: 4px;
     margin-bottom: 15px;
     .info{
+      display: flex;
+      flex-direction: column;
       position: relative;
       width: 70%;
       max-width: 70%;
@@ -140,6 +198,31 @@ export default {
       svg{
         margin-right: 5px;
       }
+    }
+  }
+  .buttons{
+    margin-top: auto;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: flex-end;
+    button{
+      /*background-color: #eeeeee;*/
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 16px;
+      padding: 5px 10px;
+      margin-right: 10px;
+      border-radius: 4px;
+      box-shadow: 0 0 12px rgba(77, 77, 77, 0.75);
+    }
+    .delete{
+      background-color: darkred;
+    }
+    .deactivate{
+      background-color: darkorange;
+    }
+    .activate{
+      background-color: green;
     }
   }
 </style>

@@ -87,6 +87,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
 
+
   // Перерисовываю шапку сайта
   (async function () {
     await store.commit('changeHeaderKey');
@@ -94,6 +95,13 @@ router.beforeEach((to, from, next) => {
 
   if(!store.state.token){
     store.state.token = localStorage.getItem('token');
+  }
+
+  // если у меня нет пользователя, но есть токен, то добавляю пользователя в стор
+  if(store.user === null && store.state.token){
+    (async function () {
+      await store.dispatch('getUserByToken', store.state.token);
+    }())
   }
 
   if (to.matched.some(record => record.meta.auth === true)){

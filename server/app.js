@@ -67,6 +67,60 @@ app.get("/api/post/:id", function(req, res){
     }
 });
 
+// изменение поста (деактивация)
+app.put("/api/posts/deactivate", jsonParser, function(req, res){
+    if(!req.body) return res.sendStatus(400);
+    var userId = req.body.id;
+    var active = req.body.active;
+
+    var data = fs.readFileSync("posts.json", "utf8");
+    var users = JSON.parse(data);
+    var user;
+    for(var i=0; i<users.length; i++){
+        if(users[i].postId==userId){
+            user = users[i];
+            break;
+        }
+    }
+    // изменяем данные у пользователя
+    if(user){
+        user.active = active;
+        var data = JSON.stringify(users);
+        fs.writeFileSync("posts.json", data);
+        res.send(user);
+    }
+    else{
+        res.status(404).send(user);
+    }
+});
+
+// изменение поста (активация)
+app.put("/api/posts/activate", jsonParser, function(req, res){
+    if(!req.body) return res.sendStatus(400);
+    var userId = req.body.id;
+    var active = req.body.active;
+
+    var data = fs.readFileSync("posts.json", "utf8");
+    var users = JSON.parse(data);
+    var user;
+    for(var i=0; i<users.length; i++){
+        if(users[i].postId==userId){
+            user = users[i];
+            break;
+        }
+    }
+    // изменяем данные у пользователя
+    if(user){
+        user.active = active;
+        var data = JSON.stringify(users);
+        fs.writeFileSync("posts.json", data);
+        res.send(user);
+    }
+    else{
+        res.status(404).send(user);
+    }
+});
+
 // получение одного пользователя по id
 app.get("/api/users/:id", function(req, res){
 

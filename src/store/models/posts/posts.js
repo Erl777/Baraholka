@@ -33,6 +33,26 @@ export default {
                     return `Post не найден`
                 });
         },
+        async deactivatePost({dispatch, commit}, postId) {
+            await api
+                .put("/posts/deactivate", {
+                    id: postId,
+                    active: false,
+                })
+                .catch(error => {
+                    console.log("error", error);
+                });
+        },
+        async activatePost({dispatch, commit}, postId) {
+            await api
+                .put("/posts/activate", {
+                    id: postId,
+                    active: true,
+                })
+                .catch(error => {
+                    console.log("error", error);
+                });
+        },
     },
     mutations: {
         setPosts(state, payload){
