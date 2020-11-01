@@ -59,7 +59,7 @@ export default {
       @include postBlock
     }
     &__description{
-      padding: 5px;
+      @include postBlock;
       text-align: left;
       max-height: 115px;
       overflow: hidden;

@@ -7,7 +7,7 @@ const crypto = require('crypto');
 var app = express();
 var jsonParser = bodyParser.json();
 
-//app.use(express.static("../" + __dirname + "/public")); // ??????
+app.use(express.static("../" + __dirname + "/public")); // ??????
 
 // рандомная генерация строки (токена)
 // crypto.randomBytes(10, (err, buf) => {
@@ -121,6 +121,54 @@ app.put("/api/posts/activate", jsonParser, function(req, res){
     }
 });
 
+// получение отправленных данных ( добавление объявления )
+app.post("/api/posts/add", jsonParser, function (req, res) {
+
+    if(!req.body) return res.sendStatus(400);
+
+    var rubric = req.body.rubric;
+    // var postId = req.body.postId;
+    var postName = req.body.title;
+    var price = req.body.price;
+    var description = req.body.description;
+    var author = req.body.author;
+    var created = req.body.created;
+    var views = req.body.views;
+    var active = req.body.active;
+    var images = req.body.loadedImages;
+    var firstPhoneNumber = req.body.firstPhoneNumber;
+    var secondPhoneNumber = req.body.secondPhoneNumber;
+
+    var post = {
+        title: postName,
+        // postId: postId,
+        price: price,
+        img: images,
+        description: description,
+        author: author,
+        views: views,
+        rubric: rubric,
+        created: created,
+        active: active,
+        firstPhoneNumber: firstPhoneNumber,
+        secondPhoneNumber: secondPhoneNumber
+    };
+
+    var data = fs.readFileSync("posts.json", "utf8");
+    var posts = JSON.parse(data);
+
+    // находим максимальный id
+    var id = Math.max.apply(Math,posts.map(function(o){return o.postId;}))
+    // увеличиваем его на единицу
+    post.postId = id+1;
+    // добавляем пользователя в массив
+    posts.push(post);
+    var data = JSON.stringify(posts);
+    // перезаписываем файл с новыми данными
+    fs.writeFileSync("posts.json", data);
+    res.send(post);
+});
+
 // получение одного пользователя по id
 app.get("/api/users/:id", function(req, res){
 
@@ -169,7 +217,7 @@ app.get("/api/users/token/:token", function(req, res){
     }
 });
 
-// получение отправленных данных
+// получение отправленных данных ( добавление пользователя )
 app.post("/api/users", jsonParser, function (req, res) {
 
     if(!req.body) return res.sendStatus(400);

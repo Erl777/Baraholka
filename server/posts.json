@@ -66,5 +66,19 @@
     "rubric": "cars",
     "created": "1603895090509",
     "active": true
+  },
+  {
+    "title": "Телевизор Samsung",
+    "price": "1700",
+    "img": "../tvSet.jpg",
+    "description": "Телевизор Samsung",
+    "author": "qwer@qwer",
+    "views": "0",
+    "rubric": "Электроника",
+    "created": "1604226622112",
+    "active": true,
+    "firstPhoneNumber": "88005553535",
+    "secondPhoneNumber": "",
+    "postId": "7"
   }
 ]

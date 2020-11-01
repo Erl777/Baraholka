@@ -53,6 +53,16 @@ export default {
                     console.log("error", error);
                 });
         },
+        async addPost({dispatch, commit}, data) {
+            await api
+                .post("/posts/add", data)
+                .then(response => {
+                    console.log("response", response);
+                })
+                .catch(error => {
+                    console.log("error", error);
+                });
+        },
     },
     mutations: {
         setPosts(state, payload){
