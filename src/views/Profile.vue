@@ -11,7 +11,9 @@
       <router-link to="/profile/post/1/edit">Edit</router-link>
       <router-link to="/profile/settings">Настройки</router-link>
     </nav>
-    <router-view></router-view>
+    <transition name="rotate" mode="out-in" appear>
+        <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -26,5 +28,15 @@ export default {
     display: flex;
     justify-content: space-between;
     margin: 30px 0;
+  }
+  .rotate-enter-active, .rotate-leave-active {
+      transition: .75s;
+  }
+  .rotate-enter {
+      opacity: 0;
+  }
+  .rotate-leave-to{
+      transform: translateX(-100%) scale(0.5);
+      opacity: 0;
   }
 </style>
