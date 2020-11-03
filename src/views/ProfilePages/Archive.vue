@@ -10,7 +10,7 @@
               :title="post.title"
               :price="post.price"
               :description="post.description"
-              :img="post.img"
+              :img="post.img[0]"
               :postId="post.postId"
               :created="post.created"
               :redacting="true"
