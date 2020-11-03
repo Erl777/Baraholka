@@ -6,19 +6,20 @@
 
     <form @submit.prevent="submitHandler" v-else class="form">
       <p class="title">Ваше имя ( оно будет отображаться в объявлениях )</p>
-      <input :value="currentUser.name" @change=" formData.name = $event.target.value "  type="text">
+      <input ref="name" :value="currentUser.name"  type="text">
 
       <p class="title">Email</p>
-      <input :value="currentUser.id" @change=" formData.email = $event.target.value "  type="email">
+      <input ref="email" :value="currentUser.id"  type="email">
 
       <p class="title">Изменить пароль:</p>
       <label>
         Старый пароль
-        <input v-model="oldPass" type="text">
+        <input v-model="oldPass" @click="passError = false" type="text">
       </label>
+      <p class="error" v-if="passError">Пароль введен не верно</p>
       <label >
         Новый пароль
-        <input v-model="formData.newPass" type="text">
+        <input v-model="newPass" type="text">
       </label>
       <button type="submit">Обновить данные</button>
     </form>
@@ -37,12 +38,10 @@ export default {
   data(){
     return{
       loading: true,
-      formData: {
-        name: '',
-        email: '',
-        newPass: ''
-      },
+      formData: {},
       oldPass: '',
+      newPass: '',
+      passError: false
     }
   },
   computed: {
@@ -51,11 +50,49 @@ export default {
     })
   },
   methods: {
-    submitHandler(){
 
-        console.log(this.formData);
+    async submitHandler(){
+      if(this.validation()){
 
+        if(!isEmpty(this.formData)){
+          console.log('не пуст');
+          console.log('sended');
+          console.log(this.formData);
+          // this.loading = true;
+          // await this.$store.dispatch('getUserByToken', this.$store.state.token);
+          // this.loading = false;
+        }
+        else {
+          alert("Данные не изменены");
+        }
+
+      }
+
+
+      function isEmpty(obj) {
+        for (let key in obj) {
+          return false;
+        }
+        return true;
+      }
+
+    },
+
+    validation(){
+      if(this.currentUser.name !== this.$refs.name.value) this.formData.name = this.$refs.name.value;
+      if(this.currentUser.id !== this.$refs.email.value) this.formData.email = this.$refs.email.value;
+      if(this.oldPass.length > 0 && this.newPass.length > 0){
+        if(this.oldPass !== this.currentUser.password){
+          this.passError = true;
+          return false;
+        }
+        else {
+          this.formData.newPass = this.newPass;
+        }
+      }
+      return true;
     }
+
   },
   async beforeMount() {
     await this.$store.dispatch('getUserByToken', this.$store.state.token);
