@@ -10,7 +10,7 @@
               :title="post.title"
               :price="post.price"
               :description="post.description"
-              :img="post.img"
+              :img="post.img[0]"
               :postId="post.postId"
               :created="post.created"
               :redacting="true"
@@ -42,10 +42,13 @@ export default {
       return this.authorPosts.filter(el => el.author.includes(this.currentUser.id) ).filter(el => el.active === true);
     }
   },
+  async beforeMount() {
+    this.getAllPosts = await this.$store.dispatch('getPosts');
+  },
   methods: {
-    ...mapActions({
-      getAllPosts: 'getPosts'
-    })
+    // ...mapActions({
+    //   getAllPosts: 'getPosts'
+    // })
   }
 }
 </script>

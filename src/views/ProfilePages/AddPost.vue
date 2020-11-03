@@ -90,13 +90,31 @@ export default {
       rubricError: false,
       descriptionError: false,
       imgError: false,
-      phoneError: false
+      phoneError: false,
+      preloadedImages: []
     }
   },
   methods:{
     imagesAddHandler(e){
-      console.log(e.target.files);
-      this.formData.loadedImages = e.target.files;
+      // console.log(e.target.files);
+      // this.formData.loadedImages = e.target.files;
+      let files = e.target.files;
+      this.preloadedImages = e.target.files;
+      // console.log(JSON.stringify(this.formData.loadedImages));
+      for(var i = 0; i < files.length; i++){
+        //console.log(files[i].name);
+        let file = {
+          'lastMod'    : files[i].lastModified,
+          'lastModDate': files[i].lastModifiedDate,
+          'name'       : files[i].name,
+          'size'       : files[i].size,
+          'type'	   : files[i].type,
+        };
+        //add the file obj to your array
+        this.formData.loadedImages.push(file);
+      }
+      console.log(this.formData.loadedImages);
+      // console.log(JSON.stringify(this.formData.loadedImages));
     },
     validateForm(){
       if(this.formData.title.length === 0) this.titleError = true;
@@ -113,11 +131,12 @@ export default {
         this.formData.postId = this.allPosts.length + 1;
         this.formData.created = Date.now();
         this.formData.author = this.currentUser.id;
+        this.formData.loadedImages = JSON.stringify(this.formData.loadedImages);
         console.log('send');
         console.log(this.formData);
         await this.$store.dispatch('addPost', this.formData);
         await this.$store.dispatch('getPosts');
-        this.$router.push('/profile/posts');
+        await this.$router.push('/profile/posts');
       }
     },
     cancel(){
@@ -128,9 +147,9 @@ export default {
   },
   computed: {
     userImagesPreload(){
-      if(this.formData.loadedImages.length > 0 ){
+      if(this.preloadedImages.length > 0 ){
         let arr = [];
-        this.formData.loadedImages.forEach(el => arr.push(window.URL.createObjectURL(el)));
+        this.preloadedImages.forEach(el => arr.push(window.URL.createObjectURL(el)));
         return arr;
       }
       else {

@@ -8,7 +8,7 @@
       <router-link to="/profile/add">Добавить объявление</router-link>
       <router-link to="/profile/archive">Архив</router-link>
       <router-link to="/profile/favourite">Избранное</router-link>
-      <router-link to="/profile/post/1/edit">Edit</router-link>
+<!--      <router-link to="/profile/post/1/edit">Edit</router-link>-->
       <router-link to="/profile/settings">Настройки</router-link>
     </nav>
     <transition name="rotate" mode="out-in" appear>

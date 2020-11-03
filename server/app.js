@@ -135,15 +135,19 @@ app.post("/api/posts/add", jsonParser, function (req, res) {
     var created = req.body.created;
     var views = req.body.views;
     var active = req.body.active;
-    var images = req.body.loadedImages;
     var firstPhoneNumber = req.body.firstPhoneNumber;
     var secondPhoneNumber = req.body.secondPhoneNumber;
 
+    var images = JSON.parse(req.body.loadedImages);
+    var imagesUrls = [];
+    for(var i = 0; i < images.length; i++){
+        imagesUrls.push(images[i].name);
+    }
+
     var post = {
         title: postName,
-        // postId: postId,
         price: price,
-        img: images,
+        img: imagesUrls,
         description: description,
         author: author,
         views: views,
