@@ -3,7 +3,9 @@
     "postId": "1",
     "title": "Заголовок",
     "price": "1000",
-    "img": ["/logo.png"],
+    "img": [
+      "/logo.png"
+    ],
     "description": "qwerqwerqwerqwerqwerqwe rqwerqwerqwerqwerqwer qwerqwerqwerqwerqwer qwerqwerqwerqwer",
     "author": "qwer@qwer",
     "views": "0",
@@ -15,7 +17,9 @@
     "postId": "2",
     "title": "Заголовок2",
     "price": "2000",
-    "img": ["/logo.png"],
+    "img": [
+      "/logo.png"
+    ],
     "description": "qwerqwerqwerqwerqwer",
     "author": "Man",
     "views": "0",
@@ -26,7 +30,9 @@
     "postId": "3",
     "title": "Заголовок3",
     "price": "3000",
-    "img": ["/logo.png"],
+    "img": [
+      "/logo.png"
+    ],
     "description": "qwerqwerqwerqwerqwer",
     "author": "Man",
     "views": "0",
@@ -34,21 +40,12 @@
     "active": true
   },
   {
-    "postId": "4",
-    "title": "Заголовок4",
-    "price": "4000",
-    "img": ["/logo.png"],
-    "description": "qwerqwerqwerqwerqwer",
-    "author": "qwer@qwer",
-    "views": "0",
-    "created": "1603895090509",
-    "active": false
-  },
-  {
     "postId": "5",
     "title": "Заголовок5",
     "price": "5000",
-    "img": ["/logo.png"],
+    "img": [
+      "/logo.png"
+    ],
     "description": "qwerqwerqwerqwerqwer",
     "author": "Man",
     "views": "0",
@@ -59,7 +56,9 @@
     "postId": "6",
     "title": "23456",
     "price": "10000",
-    "img": ["/logo.png"],
+    "img": [
+      "/logo.png"
+    ],
     "description": "qwerqwerqwerqwerqwer",
     "author": "Man",
     "views": "0",
@@ -68,10 +67,13 @@
     "active": true
   },
   {
-    "title": "Телевизор Samsung",
+    "title": "Телевизор Samsung без пульта",
     "price": "1700",
-    "img": ["/tvSet.jpg", "/tvSet.jpg"],
-    "description": "Телевизор Samsung",
+    "img": [
+      "/tvSet.jpg",
+      "/tvSet.jpg"
+    ],
+    "description": "Телевизор Samsung.",
     "author": "qwer@qwer",
     "views": "0",
     "rubric": "Электроника",
@@ -80,5 +82,18 @@
     "firstPhoneNumber": "88005553535",
     "secondPhoneNumber": "",
     "postId": "7"
+  },
+  {
+    "postId": "8",
+    "title": "Заголовок4",
+    "price": "4000",
+    "img": [
+      "/logo.png"
+    ],
+    "description": "qwerqwerqwerqwerqwer",
+    "author": "qwer@qwer",
+    "views": "0",
+    "created": "1603895090509",
+    "active": false
   }
 ]

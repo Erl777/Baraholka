@@ -2,18 +2,20 @@
   <div>
     <h1>Редактированние</h1>
 
-    <form class="form">
+    <Loader v-if="loading" />
+
+    <form v-else class="form">
 
       <p class="title">Заголовок</p>
-      <input v-model="formData.title" @click="titleError = false" type="text">
+      <input :value="currentPost.title" @click="titleError = false" ref="title" type="text">
       <p v-if="titleError" class="error">У товара должен быть заголовок</p>
 
       <p class="title">Цена ( руб. )</p>
-      <input @click="priceError = false" v-model="formData.price" type="text">
+      <input @click="priceError = false" :value="currentPost.price" ref="price" type="text">
       <p v-if="priceError" class="error">Цена должна быть больше 0</p>
 
       <p class="title">Рубрика</p>
-      <select @click="rubricError = false" v-model="formData.rubric">
+      <select @click="rubricError = false" :value="currentPost.rubric" ref="rubric">
         <option> Одежда </option>
         <option> Электроника </option>
         <option> Мебель </option>
@@ -22,12 +24,12 @@
       <p v-if="rubricError" class="error">Выберите рубрику</p>
 
       <p class="title">Описание</p>
-      <textarea v-model="formData.description" @click="descriptionError = false" cols="30" rows="10" placeholder="описание товара"></textarea>
+      <textarea :value="currentPost.description" @click="descriptionError = false" cols="30" rows="10" placeholder="описание товара" ref="description"></textarea>
       <p v-if="descriptionError" class="error">Товару необходимо описание</p>
 
       <p class="title">Изображения:</p>
       <div v-if="!(userImagesPreload.length > 0)" class="img-container">
-        <img v-for="(src, index) in formData.img " :src="src" :key="index" class="preload-img" alt="">
+        <img v-for="(src, index) in currentPost.img " :src="src" :key="index" class="preload-img" alt="">
       </div>
       <div v-if="userImagesPreload.length > 0" class="img-container">
         <img
@@ -42,16 +44,19 @@
 
       <p class="title">Номер телефона:</p>
       <div class="phoneBlock">
-        <input v-model="formData.firstPhoneNumber"
+        <input :value="currentPost.firstPhoneNumber"
                @click="phoneError = false"
+               ref="firstPhoneNumber"
                type="text"
                placeholder="071">
         <span @click="showSecondPhoneNumber = !showSecondPhoneNumber" class="showSecondPhoneNumber">
           Еще один номер
         </span>
         <div class="secondPhoneNumberContainer">
-          <input v-model="formData.secondPhoneNumber"
-                 v-if="showSecondPhoneNumber" type="text">
+          <input :value="currentPost.secondPhoneNumber"
+                 v-if="showSecondPhoneNumber"
+                 ref="secondPhoneNumber"
+                 type="text">
         </div>
         <p v-if="phoneError" class="error">Необходим ваш номер телефона</p>
       </div>
@@ -68,26 +73,15 @@
 
 <script>
   import { mapGetters} from "vuex";
+  import Loader from "../../components/Loader";
 
 export default {
   name: "PostEdit",
+  components: {Loader},
   data(){
     return{
-      formData: {
-        // rubric: '',
-        // postId: 0,
-        // title: '',
-        // price: 0,
-        // description: '',
-        // author: '',
-        // created: "",
-        // views: "0",
-        // active: true,
-        // loadedImages: [],
-        // firstPhoneNumber: '',
-        // secondPhoneNumber: '',
-        //deactivateDate: '' можно было бы добавлять дату деактивации
-      },
+      formData: {},
+      loading: true,
       showSecondPhoneNumber: false,
       titleError: false,
       priceError: false,
@@ -95,7 +89,8 @@ export default {
       descriptionError: false,
       imgError: false,
       phoneError: false,
-      preloadedImages: []
+      preloadedImages: [],
+      currentPost: null
     }
   },
   methods:{
@@ -119,28 +114,43 @@ export default {
 
     },
     validateForm(){
-      if(this.formData.title.length === 0) this.titleError = true;
-      else if(this.formData.price.length === 0 || parseInt(this.formData.price) === 0) this.priceError = true;
-      else if(this.formData.rubric.length === 0) this.rubricError = true;
-      else if(this.formData.description.length === 0) this.descriptionError = true;
-      else if(this.formData.img.length === 0) this.imgError = true;
-      else if(this.formData.firstPhoneNumber.length === 0) this.phoneError = true;
+      if(this.$refs.title.value.length === 0) this.titleError = true;
+      else if(this.$refs.price.value.length === 0 || parseInt(this.formData.price) === 0) this.priceError = true;
+      else if(this.$refs.rubric.value.length === 0) this.rubricError = true;
+      else if(this.$refs.description.value.length === 0) this.descriptionError = true;
+      // else if(this.formData.img.length === 0) this.imgError = true;
+      else if(this.$refs.firstPhoneNumber.value.length === 0) this.phoneError = true;
       else return true;
+
     },
     async sendRequest(){
       if(this.validateForm()){
-        // await this.$store.dispatch('getPosts');
-        // this.formData.postId = this.allPosts.length + 1;
-        // this.formData.created = Date.now();
-        // this.formData.author = this.currentUser.id;
-        this.formData.img = JSON.stringify(this.formData.img);
+        this.addNewData();
         console.log('send');
-        // console.log(JSON.parse(this.formData.img));
-        // console.log(typeof  this.formData.img, this.formData.img);
         console.log(this.formData);
-        // await this.$store.dispatch('addPost', this.formData);
-        // await this.$store.dispatch('getPosts');
-        // await this.$router.push('/profile/posts');
+        await this.$store.dispatch('editPost', this.formData);
+        this.loading = true;
+        await this.$store.dispatch('getPosts');
+        this.loading = false;
+      }
+    },
+    addNewData(){
+      this.formData.postId = this.currentPost.postId;
+      if(this.currentPost.title !== this.$refs.title.value) this.formData.title = this.$refs.title.value;
+      if(this.currentPost.price !== this.$refs.price.value) this.formData.price = this.$refs.price.value;
+      if(this.currentPost.rubric !== this.$refs.rubric.value) this.formData.rubric = this.$refs.rubric.value;
+      if(this.currentPost.description !== this.$refs.description.value) this.formData.description = this.$refs.description.value;
+      if(this.currentPost.firstPhoneNumber !== this.$refs.firstPhoneNumber.value) this.formData.firstPhoneNumber = this.$refs.firstPhoneNumber.value;
+      if(this.$refs.secondPhoneNumber !== undefined) {
+        if(this.currentPost.secondPhoneNumber !== this.$refs.secondPhoneNumber.value){
+          this.formData.secondPhoneNumber = this.$refs.secondPhoneNumber.value;
+        }
+      }
+      if(this.formData.img === undefined) {
+        this.formData.img = null
+      }
+      else {
+        this.formData.img = JSON.stringify(this.formData.img);
       }
     },
     cancel(){
@@ -167,8 +177,8 @@ export default {
   },
   async beforeMount() {
     await this.$store.dispatch('getPosts');
-    this.formData = this.allPosts.filter(el => el.postId === this.$route.params.id)[0];
-    console.log(typeof this.formData.img);
+    this.currentPost = this.allPosts.filter(el => el.postId === this.$route.params.id)[0];
+    this.loading = false;
   }
 }
 </script>

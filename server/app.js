@@ -173,6 +173,74 @@ app.post("/api/posts/add", jsonParser, function (req, res) {
     res.send(post);
 });
 
+// удаление поста по posId
+app.delete("/api/posts/del/:id", function(req, res){
+
+    var id = req.params.id;
+    var data = fs.readFileSync("posts.json", "utf8");
+    var users = JSON.parse(data);
+    var index = -1;
+    // находим индекс пользователя в массиве
+    for(var i=0; i<users.length; i++){
+        if(users[i].postId==id){
+            index=i;
+            break;
+        }
+    }
+    if(index > -1){
+        // удаляем пользователя из массива по индексу
+        var user = users.splice(index, 1)[0];
+        var data = JSON.stringify(users);
+        fs.writeFileSync("posts.json", data);
+        // отправляем удаленного пользователя
+        res.send(user);
+    }
+    else{
+        res.status(404).send();
+    }
+});
+
+// изменение поста
+app.put("/api/posts/edit", jsonParser, function(req, res){
+
+    if(!req.body) return res.sendStatus(400);
+
+    var id = req.body.postId;
+    var title = req.body.title;
+    var price = req.body.price;
+    var rubric = req.body.rubric;
+    var description = req.body.description;
+    var img = req.body.img;
+    var firstPhoneNumber = req.body.firstPhoneNumber;
+    var secondPhoneNumber = req.body.secondPhoneNumber;
+
+    var data = fs.readFileSync("posts.json", "utf8");
+    var posts = JSON.parse(data);
+    var post;
+    for(var i=0; i<posts.length; i++){
+        if(posts[i].postId==id){
+            post = posts[i];
+            break;
+        }
+    }
+    // изменяем данные у пользователя
+    if(post){
+        if(title !== undefined) post.title = title;
+        if(price !== undefined) post.price = price;
+        if(rubric !== undefined) post.rubric = rubric;
+        if(description !== undefined) post.description = description;
+        if(img !== null) post.img = img;
+        if(firstPhoneNumber !== undefined) post.firstPhoneNumber = firstPhoneNumber;
+        if(secondPhoneNumber !== undefined) post.secondPhoneNumber = secondPhoneNumber;
+        var data = JSON.stringify(posts);
+        fs.writeFileSync("posts.json", data);
+        res.send(post);
+    }
+    else{
+        res.status(404).send(post);
+    }
+});
+
 // получение одного пользователя по id
 app.get("/api/users/:id", function(req, res){
 

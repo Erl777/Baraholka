@@ -91,9 +91,12 @@ export default {
     },
   },
   methods: {
-    deletePostHandler(){
+    async deletePostHandler(){
       if(confirm(`Вы действительно хотите удалить ${this.title}? Это действие нельзя будет отменить!`)){
         console.log(`Удаляю пост ${this.title}`)
+        await this.$store.dispatch('deletePost', this.postId);
+        // loading
+        await this.$store.dispatch('getPosts');
       }
     },
     async deactivatePostHandler(){
