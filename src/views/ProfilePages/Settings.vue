@@ -57,17 +57,19 @@ export default {
         if(!isEmpty(this.formData)){
           console.log('не пуст');
           console.log('sended');
+          this.formData.userId = this.currentUser.id;
           console.log(this.formData);
-          // this.loading = true;
-          // await this.$store.dispatch('getUserByToken', this.$store.state.token);
-          // this.loading = false;
+          await this.$store.dispatch('redactUser', this.formData );
+          this.loading = true;
+          debugger
+          await this.$store.dispatch('getUserByToken', this.$store.state.token);
+          this.loading = false;
         }
         else {
           alert("Данные не изменены");
         }
 
       }
-
 
       function isEmpty(obj) {
         for (let key in obj) {

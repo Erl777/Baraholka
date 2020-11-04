@@ -41,6 +41,13 @@ export default {
                 throw e
             }
         },
+        async redactUser({dispatch, commit}, data) {
+            await api
+                .put("/users/edit", data)
+                .catch(error => {
+                    console.log("error", error);
+                });
+        },
         // получение id пользователя из firebase
         // getUid(){
             // const user = firebase.auth().currentUser;

@@ -301,6 +301,40 @@ app.put("/api/users", jsonParser, function(req, res){
     }
 });
 
+// изменение данных пользователя
+app.put("/api/users/edit", jsonParser, function(req, res){
+
+    if(!req.body) return res.sendStatus(400);
+
+    var userName = req.body.name;
+    var userEmail = req.body.email;
+    var userNewPass = req.body.newPass;
+    var userId = req.body.userId;
+
+    var data = fs.readFileSync("users.json", "utf8");
+    var users = JSON.parse(data);
+    var user;
+    for(var i=0; i<users.length; i++){
+        if(users[i].id==userId){
+            user = users[i];
+            break;
+        }
+    }
+    // изменяем данные у пользователя
+    if(user){
+        if(userName !== undefined) user.name = userName;
+        if(userEmail !== undefined) user.email = userEmail;
+        if(userNewPass !== undefined) user.password = userNewPass;
+
+        var data = JSON.stringify(users);
+        fs.writeFileSync("users.json", data);
+        res.send(user);
+    }
+    else{
+        res.status(404).send(user);
+    }
+});
+
 app.listen(3000, function(){
     console.log("Сервер ожидает подключения...");
 });
