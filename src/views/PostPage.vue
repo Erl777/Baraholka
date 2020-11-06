@@ -4,25 +4,36 @@
 
     <div v-else class="singlePost">
 
+      <div class="header">
+          <p class="title">{{post.title}}</p>
+          <p class="price"> Цена: {{post.price | currency}}</p>
+      </div>
+
       <div class="img-container">
-<!--        <img class="img" :src="post.img[0]" alt="">-->
-<!--          <div class="slides-container">-->
-          <img class="img-small" v-for="(src, index) in post.img " :src="src" :key="index" alt="">
-<!--          </div>-->
+
+        <img class="main-img" :src="currentImgUrl" alt="">
+        <div class="slides-container" v-if="post.img.length > 1">
+            <img class="img-small"
+                 v-for="(src, index) in post.img "
+                 :src="src"
+                 :key="index"
+                 @click="changeMainImgUrl"
+                 :class="{active : currentImgUrl === src }"
+                 alt="">
+        </div>
 
       </div>
 
       <div class="info">
-          <p class="title">{{post.title}}</p>
-          <p class="price">{{post.price | currency}}</p>
+
           <p class="description">
               {{post.description}}
           </p>
           <p class="author">
-              {{post.author}}
+              Автор: {{post.author}}
           </p>
           <p class="date-create">
-              {{post.created | date}}
+             Дата создания объявления: {{post.created | date}}
           </p>
           <span class="post__views" title="Кол-во просмотров">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -35,10 +46,13 @@
             </svg>
             {{ post.views }}
           </span>
-          <button v-if="!showNumber" @click="showNumber = !showNumber" type="button" class="show-phone-number">Показать номер</button>
-          <a v-else class="phone-number" :href="'tel:' + post.firstPhoneNumber">
-              {{post.firstPhoneNumber}}
-          </a>
+          <div class="info__footer">
+              <button v-if="!showNumber" @click="showNumber = !showNumber" type="button" class="show-phone-number">Показать номер продавца</button>
+              <a v-else class="phone-number" :href="'tel:' + post.firstPhoneNumber">
+                  {{post.firstPhoneNumber}}
+              </a>
+          </div>
+
       </div>
 
     </div>
@@ -54,7 +68,8 @@ export default {
     return{
       singlePost: null,
       loading: true,
-      showNumber: false
+      showNumber: false,
+      imgUrl: null
     }
   },
   components:{
@@ -62,44 +77,68 @@ export default {
   },
   async beforeMount() {
       this.singlePost = await this.$store.dispatch('getPost', this.$route.params.id);
+      await this.$store.dispatch('addViewToPost', this.singlePost.postId);
+      this.imgUrl = this.singlePost.img[0];
       this.loading = false
   },
   computed: {
       post(){
           return this.singlePost;
       },
+      currentImgUrl(){
+          return this.imgUrl;
+      }
+  },
+  methods: {
+      changeMainImgUrl(e){
+          let str = e.target.src;
+          this.imgUrl = str.substr(str.lastIndexOf('/'));
+      }
   }
 }
 </script>
 
 <style scoped lang="scss">
+    @mixin postBlock{
+        padding: 10px;
+        border-bottom: 2px solid #e7e7e7;
+    }
   .singlePost{
-    display: flex;
+
+  }
+  .header{
+      display: flex;
+      align-items: center;
+      @include postBlock;
+  }
+  .title{
+      width: 70%;
+  }
+  .price{
+      width: 30%;
+      text-align: right;
   }
   .info{
-      width: 70%;
-      max-width: 70%;
+
   }
   .img-container{
-    display: flex;
-      flex-direction: column;
-    /*justify-content: center;*/
-    /*align-items: center;*/
-    width: 30%;
-    max-width: 30%;
+      margin: 0 auto;
+      max-width: 500px;
+      padding: 10px;
   }
-  /*.slides-container{*/
-  /*    display: flex;*/
-  /*    justify-content: flex-start;*/
-  /*    flex-wrap: wrap;*/
-  /*    img{*/
-  /*        */
-  /*    }*/
-  /*}*/
-  .img{
+  .description{
+      @include postBlock;
+      border-top: 2px solid #e7e7e7;
+  }
+  .author, .date-create{
+      @include postBlock;
+      text-align: left;
+  }
+  .main-img{
       max-width: 100%;
+      max-height: 300px;
   }
-  .title, .price, .description{
+  .title, .description{
       text-align: left;
   }
   .post__views{
@@ -109,6 +148,7 @@ export default {
       font-size: 15px;
       left: 7px;
       bottom: 3px;
+      @include postBlock;
       &:hover{
           cursor: default;
       }
@@ -117,14 +157,30 @@ export default {
       }
   }
     .img-small{
+        width: 125px;
+        height: 125px;
         max-width: 25%;
-        object-fit: cover;
-        &:first-child{
-            width: 100%;
-            max-width: 100%;
+        object-fit: contain;
+        background-color: #e6e6e6;
+        border: 1px solid transparent;
+        &.active{
+            border: 2px solid dodgerblue;
         }
         &:hover{
             cursor: pointer;
+            border: 1px solid;
         }
+    }
+    .info__footer{
+        padding: 10px;
+        text-align: left;
+    }
+    .show-phone-number{
+        color: #000000;
+        font-weight: 700;
+        font-size: 16px;
+        padding: 5px 10px;
+        border-radius: 4px;
+        box-shadow: 0 0 12px rgba(77, 77, 77, 0.75);
     }
 </style>

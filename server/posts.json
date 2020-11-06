@@ -71,11 +71,12 @@
     "price": "1700",
     "img": [
       "/tvSet.jpg",
-      "/logo.png"
+      "/tvSet2.jpg",
+      "/tvSet3.jpg"
     ],
     "description": "Телевизор Samsung.",
     "author": "qwer@qwer",
-    "views": "0",
+    "views": 2,
     "rubric": "Электроника",
     "created": "1604226622112",
     "active": true,

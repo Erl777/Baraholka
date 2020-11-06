@@ -121,6 +121,32 @@ app.put("/api/posts/activate", jsonParser, function(req, res){
     }
 });
 
+// изменение поста (добавление просмотра объявлению)
+app.put("/api/posts/view", jsonParser, function(req, res){
+    if(!req.body) return res.sendStatus(400);
+    var userId = req.body.id;
+
+    var data = fs.readFileSync("posts.json", "utf8");
+    var users = JSON.parse(data);
+    var user;
+    for(var i=0; i<users.length; i++){
+        if(users[i].postId==userId){
+            user = users[i];
+            break;
+        }
+    }
+    // изменяем данные у пользователя
+    if(user){
+        user.views = parseInt(user.views) + 1 ;
+        var data = JSON.stringify(users);
+        fs.writeFileSync("posts.json", data);
+        res.send(user);
+    }
+    else{
+        res.status(404).send(user);
+    }
+});
+
 // получение отправленных данных ( добавление объявления )
 app.post("/api/posts/add", jsonParser, function (req, res) {
 

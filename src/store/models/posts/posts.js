@@ -53,6 +53,15 @@ export default {
                     console.log("error", error);
                 });
         },
+        async addViewToPost({dispatch, commit}, postId) {
+            await api
+                .put("/posts/view", {
+                    id: postId
+                })
+                .catch(error => {
+                    console.log("error", error);
+                });
+        },
         async addPost({dispatch, commit}, data) {
             await api
                 .post("/posts/add", data)
