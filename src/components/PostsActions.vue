@@ -47,17 +47,17 @@
 
             <div class="rubric">
                 <label for="rubric">Рубрика: </label>
-                <select name="category" id="rubric">
+                <select name="category" id="rubric" @change="$emit('changeRubricValue', $event.target.value)">
                     <option value="">Выберите рубрику</option>
-                    <option>Рубрика 1</option>
-                    <option>Рубрика 2</option>
+                    <option>Электроника</option>
+                    <option>Авто</option>
                 </select>
             </div>
 
             <div class="sorting">
                 <label for="sortingBy">Сортировка: </label>
-                <select name="sortingBy" id="sortingBy">
-                    <option>Самые новые</option>
+                <select name="sortingBy" id="sortingBy" @change="$emit('changeSortingByValue', $event.target.value)">
+<!--                    <option>Самые новые</option>-->
                     <option>Самые дешевые</option>
                     <option>Самые дорогие</option>
                 </select>

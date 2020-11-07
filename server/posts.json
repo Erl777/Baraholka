@@ -9,7 +9,7 @@
     "description": "qwerqwerqwerqwerqwerqwe rqwerqwerqwerqwerqwer qwerqwerqwerqwerqwer qwerqwerqwerqwer",
     "author": "qwer@qwer",
     "views": "0",
-    "rubric": "cars",
+    "rubric": "Авто",
     "created": "1603895090509",
     "active": true
   },
@@ -23,6 +23,7 @@
     "description": "qwerqwerqwerqwerqwer",
     "author": "Man",
     "views": 1,
+    "rubric": "",
     "created": "1603976721025",
     "active": true
   },
@@ -36,6 +37,7 @@
     "description": "qwerqwerqwerqwerqwer",
     "author": "Man",
     "views": "0",
+    "rubric": "",
     "created": "1603895090509",
     "active": true
   },
@@ -49,6 +51,7 @@
     "description": "qwerqwerqwerqwerqwer",
     "author": "Man",
     "views": "0",
+    "rubric": "",
     "created": "1603895090509",
     "active": true
   },
@@ -62,7 +65,7 @@
     "description": "qwerqwerqwerqwerqwer",
     "author": "Man",
     "views": "0",
-    "rubric": "cars",
+    "rubric": "Авто",
     "created": "1603895090509",
     "active": true
   },
@@ -94,6 +97,7 @@
     "description": "qwerqwerqwerqwerqwer",
     "author": "qwer@qwer",
     "views": "0",
+    "rubric": "",
     "created": "1603895090509",
     "active": false
   }
