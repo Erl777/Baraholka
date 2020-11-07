@@ -3,7 +3,12 @@
     "id": "qwer@qwer",
     "name": "Goga Vazgenovitch",
     "password": "12345",
-    "token": "0576e81c7e568767b205",
-    "email": "qwer@qwer.com"
+    "token": "0576e81c7e568767b205"
+  },
+  {
+    "name": "Admin",
+    "id": "admin@admin",
+    "token": "22153c76c5e3045b182b",
+    "password": "4321"
   }
 ]

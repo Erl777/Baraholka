@@ -76,7 +76,7 @@ export default {
       type: Boolean,
       default: false
     },
-    views: String,
+    views: [String, Number],
     deactivate: {
       type: Boolean,
       default: false

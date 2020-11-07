@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Login</h1>
+    <h1>Вход</h1>
     <form @submit.prevent="formSubmit" class="form">
       <label>
         Email
@@ -59,7 +59,7 @@ export default {
         result = false
       }
       if(this.formData.password.length < 4){
-        this.passwordErrorMessage = 'Пароль должен быть больше 4рех символов';
+        this.passwordErrorMessage = 'Пароль должен быть больше 4-рех символов';
         this.showPasswordError = true;
         result = false
       }

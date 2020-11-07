@@ -1,7 +1,7 @@
 <template>
   <div class="nav">
-    <router-link :to="{ name: 'Home'}">Main</router-link>
-    <router-link v-if="!this.$store.state.token" :to="{name: 'Login'}">Login</router-link>
+    <router-link :to="{ name: 'Home'}">Главная</router-link>
+    <router-link v-if="!this.$store.state.token" :to="{name: 'Login'}">Войти</router-link>
     <div v-else>
       <a href="#" v-if="this.$route.path.includes('profile')" @click.prevent="logout">Выйти</a>
       <router-link v-else to="/profile">Личный кабинет</router-link>

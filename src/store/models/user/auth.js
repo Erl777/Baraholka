@@ -28,18 +28,27 @@ export default {
                     return `Email ${token} не найден`
                 });
         },
-        async register({dispatch, commit}, {email, password, name}) {
-            try {
-                // await firebase.auth().createUserWithEmailAndPassword(email, password)
-                // const uid = await dispatch('getUid')
-                // await firebase.database().ref(`/users/${uid}/info`).set({
-                //     bill: 10000,
-                //     name
-                // })
-            } catch (e) {
-                // commit('setError', e)
-                throw e
-            }
+        async getUserById({dispatch, commit}, id) {
+            return await api
+                .get("/users/" + id )
+                .then(response => {
+                    console.log("response", response);
+                    return response.data;
+                })
+                .catch(error => {
+                    // console.log("error", error);
+                    return null;
+                });
+        },
+        async register({dispatch, commit}, data) {
+            await api
+                .post("/users/add", data)
+                .then(response => {
+                console.log("response", response);
+                })
+                .catch(error => {
+                        console.log("error", error);
+                });
         },
         async redactUser({dispatch, commit}, data) {
             await api
@@ -48,14 +57,5 @@ export default {
                     console.log("error", error);
                 });
         },
-        // получение id пользователя из firebase
-        // getUid(){
-            // const user = firebase.auth().currentUser;
-            // return user ? user.uid : null
-        // },
-        // async logout({commit}){
-            // await firebase.auth().signOut();
-            // commit('clearInfo')
-        // }
     }
 }

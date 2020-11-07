@@ -10,10 +10,10 @@ var jsonParser = bodyParser.json();
 app.use(express.static("../" + __dirname + "/public")); // ??????
 
 // рандомная генерация строки (токена)
-// crypto.randomBytes(10, (err, buf) => {
-//     if (err) throw err;
-//     console.log(`${buf.length} bytes of random data: ${buf.toString('hex')}`);
-// });
+function generateToken(){
+    return crypto.randomBytes(10).toString('hex')
+}
+
 
 // Избавился от CORS политики
 app.use(function (req, res, next) {
@@ -267,7 +267,7 @@ app.put("/api/posts/edit", jsonParser, function(req, res){
     }
 });
 
-// получение одного пользователя по id
+// получение одного пользователя по id *
 app.get("/api/users/:id", function(req, res){
 
     var id = req.params.id; // получаем id
@@ -291,7 +291,7 @@ app.get("/api/users/:id", function(req, res){
     }
 });
 
-// получение одного пользователя по token
+// получение одного пользователя по token *
 app.get("/api/users/token/:token", function(req, res){
 
     var token = req.params.token; // получаем token
@@ -315,22 +315,28 @@ app.get("/api/users/token/:token", function(req, res){
     }
 });
 
-// получение отправленных данных ( добавление пользователя )
-app.post("/api/users", jsonParser, function (req, res) {
-
+// получение отправленных данных ( добавление пользователя ) *
+app.post("/api/users/add", jsonParser, function (req, res) {
     if(!req.body) return res.sendStatus(400);
 
     var userName = req.body.name;
-    var userAge = req.body.age;
-    var user = {name: userName, age: userAge};
+    var userId = req.body.email;
+    var password = req.body.password;
+    var token = generateToken();
+    var user = {
+        name: userName,
+        id: userId,
+        token: token,
+        password: password
+    };
 
     var data = fs.readFileSync("users.json", "utf8");
     var users = JSON.parse(data);
 
     // находим максимальный id
-    var id = Math.max.apply(Math,users.map(function(o){return o.id;}))
+    // var id = Math.max.apply(Math,users.map(function(o){return o.id;}))
     // увеличиваем его на единицу
-    user.id = id+1;
+    // user.id = id+1;
     // добавляем пользователя в массив
     users.push(user);
     var data = JSON.stringify(users);
@@ -395,7 +401,7 @@ app.put("/api/users", jsonParser, function(req, res){
     }
 });
 
-// изменение данных пользователя
+// изменение данных пользователя *
 app.put("/api/users/edit", jsonParser, function(req, res){
 
     if(!req.body) return res.sendStatus(400);
@@ -417,7 +423,7 @@ app.put("/api/users/edit", jsonParser, function(req, res){
     // изменяем данные у пользователя
     if(user){
         if(userName !== undefined) user.name = userName;
-        if(userEmail !== undefined) user.email = userEmail;
+        if(userEmail !== undefined) user.id = userEmail;
         if(userNewPass !== undefined) user.password = userNewPass;
 
         var data = JSON.stringify(users);
