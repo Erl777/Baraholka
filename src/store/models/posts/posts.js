@@ -2,6 +2,7 @@ import api from '@/api';
 // import store from "../../index";
 
 export default {
+    namespace: true,
     state: {
         posts: []
     },
@@ -11,9 +12,9 @@ export default {
                 .get("/posts" )
                 .then(response => {
                     // console.log("response", response);
-                    (async function () {
-                        await commit('setPosts', response.data);
-                    }());
+
+                    commit('setPosts', response.data);
+
                     return response.data;
                 })
                 .catch(error => {
@@ -33,27 +34,18 @@ export default {
                     return `Post не найден`
                 });
         },
-        async deactivatePost({dispatch, commit}, postId) {
+        async changePostStatus({}, {postId, activate}){
+            const url = activate ? 'activate' : 'deactivate'
             await api
-                .put("/posts/deactivate", {
+                .put(`/posts/${url}`, {
                     id: postId,
-                    active: false,
+                    active: activate,
                 })
                 .catch(error => {
                     console.log("error", error);
                 });
         },
-        async activatePost({dispatch, commit}, postId) {
-            await api
-                .put("/posts/activate", {
-                    id: postId,
-                    active: true,
-                })
-                .catch(error => {
-                    console.log("error", error);
-                });
-        },
-        async addViewToPost({dispatch, commit}, postId) {
+        async increaseViewsCounter({dispatch, commit}, postId) {
             await api
                 .put("/posts/view", {
                     id: postId
@@ -97,13 +89,11 @@ export default {
         },
     },
     mutations: {
-        setPosts(state, payload){
-            state.posts = payload
+        setPosts(state, posts){
+            state.posts = posts
         },
     },
     getters: {
-        getPosts: state => {
-            return state.posts;
-        },
+        getPosts: state => state.posts,
     }
 }

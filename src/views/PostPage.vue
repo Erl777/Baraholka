@@ -77,7 +77,7 @@ export default {
   },
   async beforeMount() {
       this.singlePost = await this.$store.dispatch('getPost', this.$route.params.id);
-      await this.$store.dispatch('addViewToPost', this.singlePost.postId);
+      await this.$store.dispatch('increaseViewsCounter', this.singlePost.postId);
       this.imgUrl = this.singlePost.img[0];
       this.loading = false
   },

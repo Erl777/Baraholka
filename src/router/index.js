@@ -85,44 +85,30 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-
-
-  // Перерисовываю шапку сайта
-  (async function () {
-    await store.commit('changeHeaderKey');
-  }());
+router.beforeEach(async (to, from, next) => {
 
   if(!store.state.token){
     store.state.token = localStorage.getItem('token');
   }
 
-  // если у меня нет пользователя, но есть токен, то добавляю пользователя в стор
-  if(store.user === null && store.state.token){
-    (async function () {
-      await store.dispatch('getUserByToken', store.state.token);
-    }())
-  }
-
-  if (to.matched.some(record => record.meta.auth === true)){
+  if (to.matched.some(record => record.meta.auth)){
     // если необходима авторизация на странице, то берем токен пользователя
     const userToken = localStorage.getItem('token');
 
     if(!store.state.user){
       // подтягиваются данные пользователя если их нет, но есть токен
       // (тот случай, когда пользователь зашел на страницу и у него есть токен)
-      (async function () {
-        await store.dispatch('getUserByToken', userToken);
-      }())
+      await store.dispatch('getUserByToken', userToken);
 
     }
 
-    if(!userToken){
+    if(userToken){
+      next()
+    } else {
       // Если нет токена, то авторизуйтесь
       next('/login')
-    } else {
-      next()
     }
+
   }
   else {
     next()

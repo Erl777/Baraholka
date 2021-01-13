@@ -2,6 +2,7 @@ import api from '@/api';
 import store from "../../index";
 
 export default {
+    namespace: true,
     actions: {
         async login({dispatch, commit}, {email, password}) {
             return await api

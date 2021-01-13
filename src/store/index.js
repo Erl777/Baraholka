@@ -12,8 +12,8 @@ export default new Vuex.Store({
     headerKey: 0
   },
   mutations: {
-    setUserToStore(state, payload){
-      state.user = payload
+    setUserToStore(state, user){
+      state.user = user
     },
     clearToken(state){
       state.token = null;
@@ -21,12 +21,9 @@ export default new Vuex.Store({
     clearUserFromStore(state){
       state.user = null
     },
-    setToken(state, payload){
-      state.token = payload;
+    setToken(state, token){
+      state.token = token;
     },
-    changeHeaderKey(state){
-      state.headerKey++;
-    }
   },
   actions: {
   },
@@ -35,11 +32,6 @@ export default new Vuex.Store({
     posts
   },
   getters: {
-    getHeaderKey: state => {
-      return state.headerKey
-    },
-    getUser: state => {
-      return state.user
-    }
+    getUser: state => state.user
   }
 })

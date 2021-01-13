@@ -17,6 +17,9 @@
 <style scoped>
 
     .container {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
         --duration: 1.5s;
         --container-size: 250px;
         --box-size: 33px;
@@ -25,7 +28,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        position: relative;
+        /*position: relative;*/
         margin: 50px auto 0;
     }
 

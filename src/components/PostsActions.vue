@@ -77,7 +77,9 @@
 <script>
     export default {
         name: "PostsActions",
-        props: ['activeComponent']
+        props: {
+          'activeComponent': String
+        }
     }
 </script>
 

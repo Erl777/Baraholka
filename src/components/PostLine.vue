@@ -20,10 +20,10 @@
         {{created | date}}
       </p>
 
-      <div class="buttons" v-if="deactivate || deletePost">
-        <button v-if="activate" @click.prevent="activatePostHandler" type="button" class="activate">Активировать</button>
-        <button v-if="deactivate" @click.prevent="deactivatePostHandler" type="button" class="deactivate">Деактивировать</button>
-        <button v-if="deletePost" @click.prevent="deletePostHandler" type="button" class="delete">Удалить</button>
+      <div class="buttons" v-if="deactivate || deletePost || activate">
+        <button v-if="activate" @click="activatePostHandler" type="button" class="activate">Активировать</button>
+        <button v-if="deactivate" @click="deactivatePostHandler" type="button" class="deactivate">Деактивировать</button>
+        <button v-if="deletePost" @click="deletePostHandler" type="button" class="delete">Удалить</button>
       </div>
 
       <router-link :to="{name: 'PostEdit', params: {id: postId}}"
@@ -43,7 +43,7 @@
         </svg>
       </router-link>
 
-      <span class="post__views" title="Кол-во просмотров">
+      <span v-if="this.$route.path.includes('profile')" class="post__views" title="Кол-во просмотров">
         <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
              viewBox="0 0 488.85 488.85" style="enable-background:new 0 0 488.85 488.85;width: 20px; height: 20px" xml:space="preserve">
           <path d="M244.425,98.725c-93.4,0-178.1,51.1-240.6,134.1c-5.1,6.8-5.1,16.3,0,23.1c62.5,83.1,147.2,134.2,240.6,134.2
@@ -102,14 +102,14 @@ export default {
     async deactivatePostHandler(){
       if(confirm(`Вы действительно хотите деактивировать ${this.title}? Объявление будет скрыто от других пользователей и перемещенно в арихив`)){
         console.log(this.postId);
-        await this.$store.dispatch('deactivatePost', this.postId);
+        await this.$store.dispatch('changePostStatus', { postId: this.postId, activate: false });
         this.reloadPosts();
       }
     },
     async activatePostHandler(){
       if(confirm(`Вы действительно хотите активировать ${this.title}? Объявление будет скрыто от других пользователей и перемещенно в арихив`)){
         console.log(this.postId);
-        await this.$store.dispatch('activatePost', this.postId);
+        await this.$store.dispatch('changePostStatus', { postId: this.postId, activate: true });
         this.reloadPosts();
       }
     },

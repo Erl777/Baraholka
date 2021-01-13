@@ -21,7 +21,14 @@
 <script>
 export default {
   name: "PostGrid",
-  props: ['title', 'price', 'description', 'img', 'postId', 'created'],
+  props: {
+    'title': String ,
+    'price': String,
+    'description': String,
+    'img': String,
+    'postId': String,
+    'created': String
+  },
 }
 </script>
 
@@ -31,10 +38,8 @@ export default {
     border-bottom: 2px solid #e7e7e7;
   }
   .post{
-    /*width: 32.2%;*/
     box-shadow: 0 0 12px rgba(77, 77, 77, 0.75);
     border-radius: 4px;
-    /*margin-bottom: 20px;*/
     &__title{
       width: 100%;
       margin: 0;
@@ -49,11 +54,6 @@ export default {
     }
     &__img{
       max-width: 100%;
-      //transition: 1.5s linear;
-      //&:hover{
-      //  transform: scale(1.2);
-      //  transition: 1.5s linear;
-      //}
     }
     &__img-container{
       @include postBlock
