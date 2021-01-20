@@ -1,5 +1,8 @@
 export default function currencyFilter(value) {
-    let parts = value.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    return parts.join(".") + ' ₽';
+    var moneyFormatter  = new Intl.NumberFormat('ru-RU', {
+        style: 'currency',
+        currency: 'RUB',
+        minimumFractionDigits: 0,
+    });
+    return moneyFormatter.format(value);
 }
