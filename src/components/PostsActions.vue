@@ -8,6 +8,7 @@
         name="search"
         placeholder="Поиск..."
         style="margin-right: auto;"
+        :value="filtering.search"
 
         @input="emitInput($event.target.value, 'search')"
       >
@@ -94,6 +95,7 @@
         <select
           name="category"
           id="rubric"
+          :value="filtering.rubric"
 
           @input="emitInput($event.target.value, 'rubric')"
         >
@@ -108,6 +110,7 @@
         <select
           name="sortingBy"
           id="sortingBy"
+          :value="filtering.sortingBy"
 
           @input="emitInput($event.target.value, 'sortingBy')"
         >
@@ -122,6 +125,7 @@
           type="text"
           class="minPrice"
           placeholder="от"
+          :value="filtering.minPrice"
 
           @input="emitInput(getNumber($event.target.value), 'minPrice')"
         >
@@ -131,6 +135,7 @@
           class="maxPrice"
           name="maxPrice"
           placeholder="до"
+          :value="filtering.maxPrice"
 
           @input="emitInput(getNumber($event.target.value), 'maxPrice')"
         >
@@ -144,7 +149,21 @@
 <script>
 export default {
   name: 'PostsActions',
+  model: {
+    prop: 'filtering',
+    event: 'input',
+  },
   props: {
+    filtering: {
+      type: Object,
+      default: () => ({
+        search: '',
+        minPrice: 0,
+        maxPrice: 0,
+        rubric: '',
+        sortingBy: '',
+      }),
+    },
     activeComponent: {
       type: String,
       default: '',
@@ -167,10 +186,10 @@ export default {
      * @param {string} key
      */
     emitInput(value, key) {
-      this.$emit('input', {
-        value,
-        key,
-      });
+      // альтернативная запись
+      // const newFiltering = Object.assign({}, this.filtering, {[key]: value});
+
+      this.$emit('input', { ...this.filtering, [key]: value });
     },
 
     /**
@@ -180,8 +199,9 @@ export default {
      * @return {boolean}
      */
     checkIsNumber(value) {
-      return /^[0-9]/.test(value);
+      // альтернативная проверка
       // return Number.isInteger(Number(value));
+      return /^[0-9]/.test(value);
     },
 
     /**

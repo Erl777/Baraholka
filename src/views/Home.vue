@@ -4,7 +4,8 @@
     <PostsActions
       :active-component="currentComponent"
 
-      @input="filterHandler"
+      v-model="filtering"
+
       @changeComponent="changeActiveComponent"
     />
 
@@ -49,6 +50,7 @@ export default {
   },
   data() {
     return {
+      vari: '',
       currentComponent: 'PostGrid',
       allPosts: [],
       loading: true,
@@ -147,16 +149,6 @@ export default {
     },
   },
   methods: {
-    /**
-     * Запись введённых данных в фильтр
-     *
-     * @param {string | number} value
-     * @param {string} key
-     */
-    filterHandler({ value, key }) {
-      this.filtering[key] = value;
-    },
-
     changeActiveComponent(componentType) {
       this.currentComponent = componentType;
     },
