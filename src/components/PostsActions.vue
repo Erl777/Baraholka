@@ -5,10 +5,11 @@
 
       <input
         type="text"
+        name="search"
         placeholder="Поиск..."
         style="margin-right: auto;"
 
-        @input="$emit('changeSearchName', $event.target.value)"
+        @input="emitInput($event.target.value, 'search')"
       >
 
       <button
@@ -94,7 +95,7 @@
           name="category"
           id="rubric"
 
-          @change="$emit('changeRubricValue', $event.target.value)"
+          @input="emitInput($event.target.value, 'rubric')"
         >
           <option value="">Выберите рубрику</option>
           <option>Электроника</option>
@@ -108,7 +109,7 @@
           name="sortingBy"
           id="sortingBy"
 
-          @change="$emit('changeSortingByValue', $event.target.value)"
+          @input="emitInput($event.target.value, 'sortingBy')"
         >
           <option>Самые дешевые</option>
           <option>Самые дорогие</option>
@@ -122,14 +123,16 @@
           class="minPrice"
           placeholder="от"
 
-          @input="$emit('changeMinPrice', $event.target.value)"
+          @input="emitInput(getNumber($event.target.value), 'minPrice')"
         >
+
         <input
           type="text"
           class="maxPrice"
+          name="maxPrice"
           placeholder="до"
 
-          @input="$emit('changeMaxPrice', $event.target.value)"
+          @input="emitInput(getNumber($event.target.value), 'maxPrice')"
         >
       </label>
 
@@ -155,6 +158,40 @@ export default {
      */
     emitViewType(type) {
       this.$emit('changeComponent', type);
+    },
+
+    /**
+     * Эмитит значение поля и ключ объекта формы
+     *
+     * @param {string | number} value
+     * @param {string} key
+     */
+    emitInput(value, key) {
+      this.$emit('input', {
+        value,
+        key,
+      });
+    },
+
+    /**
+     * Проверка является ли строка числом
+     *
+     * @param {string} value
+     * @return {boolean}
+     */
+    checkIsNumber(value) {
+      return /^[0-9]/.test(value);
+      // return Number.isInteger(Number(value));
+    },
+
+    /**
+     * Преобразование в число
+     *
+     * @param {string} value
+     * @return {number}
+     */
+    getNumber(value) {
+      return this.checkIsNumber(value) ? Number(value) : 0;
     },
   },
 };

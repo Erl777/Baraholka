@@ -4,12 +4,7 @@
     <PostsActions
       :active-component="currentComponent"
 
-      @changeSearchName="searchByName"
-      @changeMinPrice="changeMinPrice"
-      @changeMaxPrice="changeMaxPrice"
-      @changeRubricValue="changeRubric"
-      @changeSortingByValue="changeSortingBy"
-
+      @input="filterHandler"
       @changeComponent="changeActiveComponent"
     />
 
@@ -58,9 +53,9 @@ export default {
       allPosts: [],
       loading: true,
       filtering: {
-        name: '',
+        search: '',
         minPrice: 0,
-        maxPrice: null,
+        maxPrice: 0,
         rubric: '',
         sortingBy: '',
       },
@@ -80,8 +75,8 @@ export default {
     posts() {
       this.showEmpty = false;
       let filteredRes = [];
-      if (this.filtering.name !== '') {
-        filteredRes = this.allPosts.filter(el => el.title.includes(this.filtering.name));
+      if (this.filtering.search !== '') {
+        filteredRes = this.allPosts.filter(el => el.title.includes(this.filtering.search));
       }
       if (this.filtering.minPrice > 0 && this.filtering.maxPrice === null) {
         if (filteredRes.length > 0) {
@@ -152,24 +147,14 @@ export default {
     },
   },
   methods: {
-    searchByName(name) {
-      this.filtering.name = name;
-    },
-
-    changeMinPrice(val) {
-      this.filtering.minPrice = parseInt(val);
-    },
-
-    changeMaxPrice(val) {
-      this.filtering.maxPrice = parseInt(val);
-    },
-
-    changeSortingBy(str) {
-      this.filtering.sortingBy = str;
-    },
-
-    changeRubric(str) {
-      this.filtering.rubric = str;
+    /**
+     * Запись введённых данных в фильтр
+     *
+     * @param {string | number} value
+     * @param {string} key
+     */
+    filterHandler({ value, key }) {
+      this.filtering[key] = value;
     },
 
     changeActiveComponent(componentType) {
