@@ -50,7 +50,6 @@ export default {
   },
   data() {
     return {
-      vari: '',
       currentComponent: 'PostGrid',
       allPosts: [],
       loading: true,
