@@ -3,88 +3,27 @@
 
     <div class="filteringName">
 
-      <input
-        type="text"
-        name="search"
-        placeholder="Поиск..."
-        style="margin-right: auto;"
+      <input-base
         :value="filtering.search"
+        :name="'search'"
+        :placeholder="'Поиск...'"
+        :inputKey="'search'"
+        @getInputValue = "emitInputValue"
+      />
 
-        @input="emitInput($event.target.value, 'search')"
-      >
-
-      <button
-        type="button"
+      <button-base
         class="change-view-btn"
-
         @click="emitViewType('PostGrid')"
       >
-        <svg
-          class="change-view"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          x="0px"
-          y="0px"
-          viewBox="0 0 512 512"
-          style="enable-background:new 0 0 512 512;"
-          xml:space="preserve"
-          :class="{ 'change-view_active' : activeComponent === 'PostGrid' }"
-        >
+        <svg-grid :active-component="activeComponent" />
+      </button-base>
 
-                    <path
-                      d="M208,0H16C7.163,0,0,7.163,0,16v192c0,8.837,7.163,16,16,16h192c8.837,0,16-7.163,16-16V16C224,7.163,216.837,0,208,0z
-                         M192,192H32V32h160V192z"
-                    />
-          <path
-            d="M496,0H304c-8.837,0-16,7.163-16,16v192c0,8.837,7.163,16,16,16h192c8.837,0,16-7.163,16-16V16
-                        C512,7.163,504.837,0,496,0z M480,192H320V32h160V192z"
-          />
-          <path
-            d="M208,288H16c-8.837,0-16,7.163-16,16v192c0,8.837,7.163,16,16,16h192c8.837,0,16-7.163,16-16V304
-                        C224,295.163,216.837,288,208,288z M192,480H32V320h160V480z"
-          />
-          <path
-            d="M496,288H304c-8.837,0-16,7.163-16,16v192c0,8.837,7.163,16,16,16h192c8.837,0,16-7.163,16-16V304
-                        C512,295.163,504.837,288,496,288z M480,480H320V320h160V480z"
-          />
-
-                </svg>
-      </button>
-
-      <button
-        type="button"
+      <button-base
         class="change-view-btn"
-
         @click="emitViewType('PostLine')"
       >
-        <svg
-          class="change-view"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          x="0px"
-          y="0px"
-          width="20px"
-          height="20px"
-          viewBox="0 0 455.276 455.276"
-          style="enable-background:new 0 0 455.276 455.276;"
-          :class="{ 'change-view_active' : activeComponent === 'PostLine' }"
-          xml:space="preserve"
-        >
-
-                    <path
-                      d="M374.244,0H81.034c-9.532,0-17.292,7.757-17.292,17.286v177.84c0,9.529,7.76,17.286,17.292,17.286h293.21
-                        c9.534,0,17.291-7.757,17.291-17.286V17.286C391.535,7.757,383.778,0,374.244,0z M374.726,195.132c0,0.262-0.211,0.476-0.481,0.476
-                        H81.034c-0.269,0-0.482-0.219-0.482-0.476V17.286c0-0.263,0.213-0.476,0.482-0.476h293.21c0.271,0,0.481,0.219,0.481,0.476V195.132
-                        z M374.244,242.858H81.034c-9.532,0-17.292,7.761-17.292,17.291v177.84c0,9.532,7.76,17.287,17.292,17.287h293.21
-                        c9.534,0,17.291-7.755,17.291-17.287v-177.84C391.535,250.619,383.778,242.858,374.244,242.858z M374.726,437.989
-                        c0,0.264-0.211,0.476-0.481,0.476H81.034c-0.269,0-0.482-0.212-0.482-0.476v-177.84c0-0.262,0.213-0.481,0.482-0.481h293.21
-                        c0.271,0,0.481,0.22,0.481,0.481V437.989z"
-                    />
-
-                </svg>
-      </button>
+        <svg-line :active-component="activeComponent" />
+      </button-base>
 
     </div>
 
@@ -92,53 +31,45 @@
 
       <label class="rubric">
         Рубрика:
-        <select
-          name="category"
-          id="rubric"
+        <select-base
+          :name="'rubric'"
           :value="filtering.rubric"
-
-          @input="emitInput($event.target.value, 'rubric')"
-        >
-          <option value="">Выберите рубрику</option>
-          <option>Электроника</option>
-          <option>Авто</option>
-        </select>
+          :options="['Выберите рубрику', 'Электроника', 'Авто']"
+          :select-key="'rubric'"
+          @getSelectValue = "emitInputValue"
+        />
       </label>
 
       <label class="sorting">
         Сортировка:
-        <select
-          name="sortingBy"
-          id="sortingBy"
+        <select-base
+          :name="'sortingBy'"
           :value="filtering.sortingBy"
-
-          @input="emitInput($event.target.value, 'sortingBy')"
-        >
-          <option>Самые дешевые</option>
-          <option>Самые дорогие</option>
-        </select>
+          :options="['Самые дешевые', 'Самые дорогие']"
+          :select-key="'sortingBy'"
+          @getSelectValue = "emitInputValue"
+        />
       </label>
 
       <label class="price">
         Цена:
-        <input
-          type="text"
+        <input-base
           class="minPrice"
-          placeholder="от"
           :value="filtering.minPrice"
+          :name="'minPrice'"
+          :placeholder="'от'"
+          :inputKey="'minPrice'"
+          @getInputValue = "getPrice"
+        />
 
-          @input="emitInput(getNumber($event.target.value), 'minPrice')"
-        >
-
-        <input
-          type="text"
+        <input-base
           class="maxPrice"
-          name="maxPrice"
-          placeholder="до"
           :value="filtering.maxPrice"
-
-          @input="emitInput(getNumber($event.target.value), 'maxPrice')"
-        >
+          :name="'maxPrice'"
+          :placeholder="'до'"
+          :inputKey="'maxPrice'"
+          @getInputValue = "getPrice"
+        />
       </label>
 
     </div>
@@ -147,9 +78,15 @@
 </template>
 
 <script>
+import InputBase from "./simpleElements/inputBase";
+import SvgGrid from "./svg/svgGrid";
+import SvgLine from "./svg/svgLine";
+import SelectBase from "./simpleElements/selectBase";
+import ButtonBase from "./simpleElements/buttonBase";
 export default {
   name: 'PostsActions',
-  model: {
+    components: {ButtonBase, SelectBase, SvgLine, SvgGrid, InputBase},
+    model: {
     prop: 'filtering',
     event: 'input',
   },
@@ -170,6 +107,18 @@ export default {
     },
   },
   methods: {
+    getPrice(data){
+        let {val, key} = data;
+        this.emitInput(this.getNumber(val), key);
+    },
+    /**
+     * Получение ключа и данных из компонента
+     *
+     * @param {object} data
+     */
+    emitInputValue(data){
+        this.emitInput(data.val, data.key);
+    },
     /**
      * Эмитит типа компонента
      *
@@ -232,6 +181,7 @@ export default {
 
   input {
     width: 40%;
+    margin-right: auto;
   }
 }
 
