@@ -67,6 +67,9 @@ export default {
   async beforeMount() {
     this.allPosts = await this.$store.dispatch('getPosts');
     this.loading = false;
+
+    this.$store.dispatch('AWESOME_ACTION_WITH_PROMISE', '/assad');
+
   },
   computed: {
     ...mapGetters({
