@@ -1,41 +1,34 @@
 <template>
   <input
-    type="text"
-    :placeholder="placeholder"
-    :value="value"
-    :name="name"
-    @input="emitData({val: $event.target.value, inputKey})"
+    type="password"
+    v-bind="$props"
+    v-on="listeners"
   >
 </template>
 
 <script>
-    export default {
-        name: "inputBase",
-        props: {
-            value: {
-                type: [Number, String],
-                default: ''
-            },
-            name: {
-                type: String,
-                default: ''
-            },
-            placeholder: {
-                type: String,
-                default: ''
-            },
-            inputKey: {
-                type: String,
-                default: ''
-            }
-        },
-        methods: {
-            emitData(data){
-                let {val, inputKey: key} = data;
-                this.$emit('getInputValue', {val, key})
-            }
-        }
-    }
+export default {
+  name: 'inputBase',
+  props: {
+    value: {
+      type: [Number, String],
+      default: '',
+    },
+    className: {
+      type: String,
+      default: 'test-class-name',
+    },
+  },
+  computed: {
+    listeners() {
+      return {
+        ...this.$listeners,
+        blur: event => this.$emit('blur', event.target.value),
+        input: event => this.$emit('input', event.target.value),
+      };
+    },
+  },
+};
 </script>
 
 <style scoped>
