@@ -1,22 +1,19 @@
 <template>
   <div>
     <h1>Избранные</h1>
-    <select-custom
-      :select-list="arr"
-      v-model="valueSelected"
-    />
+    <form-custom />
   </div>
 </template>
 
 <script>
-import SelectCustom from "../../components/simpleElements/SelectCustom";
+
+import FormCustom from "../../components/FormCustom";
 export default {
   name: "Favourite",
-    components: {SelectCustom},
+    components: {FormCustom},
     data(){
       return{
-          valueSelected: '4321',
-          arr: [ 'Выберите значение' ,'Значение1', 'Значение2', 'Значение3', 'Значение4', 'Значение5']
+
       }
     },
 }

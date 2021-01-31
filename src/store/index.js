@@ -27,19 +27,19 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    AWESOME_ACTION_WITH_PROMISE(ctx, url) {
-      return new Promise((resolve, reject) => {
-        axios.get(url)
-          .then(response => {
-            console.log(response);
-            resolve(response);
-          })
-          .catch(error => {
-            console.error(error);
-            reject(error);
-          });
-      });
-    },
+    // AWESOME_ACTION_WITH_PROMISE(ctx, url) {
+    //   return new Promise((resolve, reject) => {
+    //     axios.get(url)
+    //       .then(response => {
+    //         console.log(response);
+    //         resolve(response);
+    //       })
+    //       .catch(error => {
+    //         console.error(error);
+    //         reject(error);
+    //       });
+    //   });
+    // },
   },
   modules: {
     auth,
