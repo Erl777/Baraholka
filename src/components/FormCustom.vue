@@ -18,6 +18,7 @@
         type="tel"
         title="Телефон"
         v-model="formData.tel"
+        :class="{'invalid': !validNumber }"
       />
       <small class="error-message">Введите телефон</small>
 
@@ -28,7 +29,7 @@
       />
       <small class="error-message">Введите свой возраст</small>
 
-      <checkbox-custom />
+      <checkbox-custom v-model="formData.checkbox" :label="'Я согласен с условиями'"/>
 
       <radio-custom
         v-model="formData.radio"
@@ -71,24 +72,39 @@
                 formData: {
                     name: '',
                     email: '',
-                    tel: '',
+                    tel: '(099) 222-23-32',
                     age: '',
-                    radio: null
-                }
+                    radio: null,
+                    checkbox: false
+                },
+                pattern: /^\([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}/g
             }
         },
         methods: {
             validation(){
                 console.log('validation');
             }
+        },
+        computed: {
+            validNumber(){
+                return this.pattern.test(this.formData.tel)
+            }
         }
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .form{
     display: flex;
     flex-direction: column;
+  }
+  .invalid{
+    input{
+      border: 1px solid red;
+    }
+  }
+  input{
+    outline: none;
   }
 
 </style>

@@ -1,7 +1,10 @@
 <template>
   <label >
     {{title}}
-    <input :type="type" v-on="listeners">
+    <input
+      :type="type"
+      v-on="listeners"
+    >
   </label>
 </template>
 
@@ -16,6 +19,10 @@
             type: {
                 type: String,
                 default: 'text'
+            },
+            pattern:{
+                type: String,
+                default: ''
             }
         },
         computed: {

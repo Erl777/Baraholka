@@ -1,18 +1,31 @@
 <template>
   <div>
-    <input id="c1" type="checkbox">
-    <label for="c1">Checkbox</label>
+    <label>
+      {{label}}
+      <input v-on="listeners" type="checkbox">
+    </label>
   </div>
 </template>
 
 <script>
     export default {
         name: "CheckboxCustom",
-        data(){
-            return{
-
+        props: {
+            value: {
+                default: false,
+            },
+            label: {
+                type: String
             }
-        }
+        },
+        computed: {
+            listeners() {
+                return {
+                    ...this.$listeners,
+                    input: event => this.$emit('input', event.target.checked),
+                };
+            },
+        },
     }
 </script>
 
