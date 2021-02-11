@@ -4,6 +4,7 @@
     <input
       :type="type"
       v-on="listeners"
+      :value="value"
     >
   </label>
 </template>
@@ -12,6 +13,10 @@
     export default {
         name: "InputCustom",
         props: {
+            value: {
+              type: String,
+              default: '18'
+            },
             title: {
                 type: String,
                 default: ''
@@ -29,7 +34,17 @@
             listeners() {
                 return {
                     ...this.$listeners,
-                    input: event => this.$emit('input', event.target.value),
+                    // input: event => this.$emit('input', event.target.value),
+                    input: event => {
+                        if(this.type === 'number'){
+                            let minValue = 0;
+                            let value = event.target.value;
+                            value >= minValue ? this.$emit('input', event.target.value) : event.target.value = minValue;
+                        }
+                        else {
+                            this.$emit('input', event.target.value)
+                        }
+                    } ,
                 };
             },
         },

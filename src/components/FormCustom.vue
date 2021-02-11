@@ -4,30 +4,38 @@
       <input-custom
         title="Имя"
         v-model="formData.name"
+        @focus="errorName = false"
+        :class="{'invalid': errorName}"
       />
-      <small class="error-message">Введите имя</small>
+      <small v-if="errorName" class="error-message">Введите имя</small>
 
       <input-custom
         type="email"
         title="Почта"
         v-model="formData.email"
+        @focus="errorEmail = false"
+        :class="{'invalid': errorEmail}"
       />
-      <small class="error-message">Введите почту</small>
+      <small v-if="errorEmail" class="error-message">Введите почту</small>
 
       <input-custom
         type="tel"
         title="Телефон"
         v-model="formData.tel"
-        :class="{'invalid': !validNumber }"
+        :class="{'invalid': !numberIsValid || errorTel}"
+        @change="validNumber"
+        @focus="errorTel = false"
       />
-      <small class="error-message">Введите телефон</small>
+      <small v-if="errorTel" class="error-message">Введите телефон</small>
 
       <input-custom
         type="number"
         title="Возраст"
         v-model="formData.age"
+        @focus="errorAge = false"
+        :class="{'invalid': errorAge}"
       />
-      <small class="error-message">Введите свой возраст</small>
+      <small v-if="errorAge" class="error-message">Введите свой возраст</small>
 
       <checkbox-custom v-model="formData.checkbox" :label="'Я согласен с условиями'"/>
 
@@ -72,23 +80,50 @@
                 formData: {
                     name: '',
                     email: '',
-                    tel: '(099) 222-23-32',
-                    age: '',
+                    tel: '',
+                    // perfectTel: '(099) 222-23-32',
+                    age: '5',
                     radio: null,
                     checkbox: false
                 },
+                numberIsValid: true,
+                errorName: false,
+                errorEmail: false,
+                errorTel: false,
+                errorAge: false,
                 pattern: /^\([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}/g
             }
         },
         methods: {
             validation(){
+                let valid = true;
+                if(this.formData.name.length === 0) {
+                    valid = false;
+                    this.errorName = true;
+                }
+                if(this.formData.email.length === 0) {
+                    valid = false;
+                    this.errorEmail = true;
+                }
+                if(this.formData.age.length === 0) {
+                    valid = false;
+                    this.errorAge = true;
+                }
+                if(this.formData.tel.length === 0) {
+                    valid = false;
+                    this.errorTel = true;
+                }
+                if(valid) alert('congratulations!!!');
                 console.log('validation');
+            },
+            validNumber(){
+                this.numberIsValid = this.pattern.test(this.formData.tel)
             }
         },
         computed: {
-            validNumber(){
-                return this.pattern.test(this.formData.tel)
-            }
+            // validNumber(){
+            //     return this.pattern.test(this.formData.tel)
+            // }
         }
     }
 </script>
@@ -105,6 +140,9 @@
   }
   input{
     outline: none;
+  }
+  .error-message{
+    color: red;
   }
 
 </style>
