@@ -102,7 +102,6 @@
         Выберите один из вариантов
       </small>
 
-      <p>Введите что-то в поле ниже</p>
       <textarea-base
         v-model="formData.description"
         @focus="errorTextarea = false"
@@ -126,7 +125,7 @@
         Выберите хоть один из вариантов
       </small>
 
-      <button type="submit">Сохранить</button>
+      <button class="save" type="submit">Сохранить</button>
 
     </form>
 </template>
@@ -234,7 +233,15 @@
   .error-message{
     color: red;
   }
-
+  .save{
+    display: inline-block;
+    width: 100px;
+    background-color: cornflowerblue;
+    color: #fff;
+    padding: 5px;
+    border-radius: 10px;
+    margin: 0 auto;
+  }
 </style>
 
 <!--Запилите форму, в которой будут :-->
