@@ -1,18 +1,19 @@
 <template>
   <ul>
 
-    <li v-for="item in arr" :key="item">
+    <li v-for="item in value" :key="item.name">
 
       <input
-        :id="item"
+        :id="item.name"
         type="checkbox"
-        :value="item"
-        v-model="choosenVariants"
+        :value="item.value"
+        @click="item.checked = !item.checked"
+        :checked="item.checked"
       >
 
       <label
-        :for="item">
-        {{item}}
+        :for="item.name">
+        {{item.name}}
       </label>
 
     </li>
@@ -22,26 +23,33 @@
 
 <script>
     export default {
-        name: "CheckboxCustom",
+        name: "CheckboxesCustom",
         props: {
-            arr: {
-                type: Array
-            }
-        },
-        data(){
-            return{
-              choosenVariants: []
+            value: {
+                type: Object,
+                default: () => {
+                  return {
+                    elem:
+                      {
+                        name: 'Увы, данных нет',
+                        value: 'empty'
+                      }
+                    }
+                }
             }
         },
         watch: {
-          choosenVariants: {
+          value: {
             deep: true,
 
             handler(){
-              this.$emit('input', this.choosenVariants)
+              this.$emit('variantsChange', this.value)
             }
           }
-        }
+        },
+      created() {
+        this.$emit('variantsChange', this.value)
+      }
     }
 </script>
 

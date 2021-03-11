@@ -115,8 +115,8 @@
       </small>
 
       <checkboxes-custom
-        v-model="formData.variants"
-        :arr="arr"
+        :value="checkboxesObj"
+        @variantsChange="variantsChange"
         @input="errorCheckboxes = false"
       />
       <small
@@ -142,7 +142,23 @@
         components: {TextareaBase, RadioCustom, CheckboxCustom, InputCustom, CheckboxesCustom},
         data(){
             return{
-                arr: ['Апельсин', 'Мандарин', 'Банан'],
+                checkboxesObj: {
+                  elem1:{
+                    name: 'Апельсин',
+                    value: 'Апельсин',
+                    checked: false
+                  },
+                  elem2: {
+                    name: 'Мандарин',
+                    value: 'Мандарин',
+                    checked: true
+                  },
+                  elem3: {
+                    name: 'Банан',
+                    value: 'Банан',
+                    checked: false
+                  }
+                },
                 formData: {
                     name: '',
                     email: '',
@@ -152,7 +168,7 @@
                     radio: null,
                     checkbox: false,
                     description: '',
-                    variants: []
+                    variants: {}
                 },
                 numberIsValid: true,
                 errorName: false,
@@ -194,6 +210,9 @@
             },
             validNumber(){
                 this.numberIsValid = this.pattern.test(this.formData.tel)
+            },
+            variantsChange(obj){
+              this.formData.variants = Object.assign({}, obj);
             }
         },
     }
