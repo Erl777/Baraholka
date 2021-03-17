@@ -1,14 +1,13 @@
 <template>
-    <form @submit.prevent="validation" class="form">
+    <form @submit.prevent="submit" class="form">
 
       <input-custom
         title="Имя"
-        v-model="formData.name"
-        @focus="errorName = false"
-        :class="{'invalid': errorName}"
+        v-model.trim="$v.formData.name.$model"
+        :class="{ 'invalid': $v.formData.name.$error }"
       />
       <small
-        v-if="errorName"
+        v-if="$v.formData.name.$error"
         class="error-message"
       >
         Введите имя
@@ -17,27 +16,24 @@
       <input-custom
         type="email"
         title="Почта"
-        v-model="formData.email"
-        @focus="errorEmail = false"
-        :class="{'invalid': errorEmail}"
+        v-model.trim="$v.formData.email.$model"
+        :class="{ 'invalid': $v.formData.email.$error }"
       />
       <small
-        v-if="errorEmail"
+        v-if="$v.formData.email.$error"
         class="error-message"
       >
-        Введите почту
+        Введите почту корректно
       </small>
 
       <input-custom
         type="tel"
         title="Телефон"
-        v-model="formData.tel"
-        :class="{'invalid': !numberIsValid || errorTel}"
-        @change="validNumber"
-        @focus="errorTel = false"
+        v-model="$v.formData.phoneNumber.$model"
+        :class="{ 'invalid': $v.formData.phoneNumber.$error }"
       />
       <small
-        v-if="errorTel"
+        v-if="$v.formData.phoneNumber.$error"
         class="error-message"
       >
         Введите телефон
@@ -50,6 +46,12 @@
         @focus="errorAge = false"
         :class="{'invalid': errorAge}"
       />
+<!--      <input-number-->
+<!--        title="Возраст"-->
+<!--        v-model="formData.age"-->
+<!--        @focus="errorAge = false"-->
+<!--        :class="{'invalid': errorAge}"-->
+<!--      />-->
       <small
         v-if="errorAge"
         class="error-message"
@@ -126,6 +128,9 @@
       </small>
 
       <button class="save" type="submit">Сохранить</button>
+      <p class="typo__p" v-if="submitStatus === 'OK'">Thanks for your submission!</p>
+      <p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p>
+      <p class="typo__p" v-if="submitStatus === 'PENDING'">Sending...</p>
 
     </form>
 </template>
@@ -136,9 +141,17 @@
     import RadioCustom from "./simpleElements/RadioCustom";
     import CheckboxesCustom from "@/components/simpleElements/CheckboxesCustom";
     import TextareaBase from "@/components/simpleElements/textareaBase";
+    import InputNumber from "@/components/simpleElements/InputNumber";
+    import { required, minLength, email } from 'vuelidate/lib/validators';
+    const isValidNumber = (value) => {
+        const pattern = /^\([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}/g
+        console.log(value, typeof value)
+        console.log(pattern.test(value))
+        return pattern.test(value)
+    }
     export default {
         name: "FormCustom",
-        components: {TextareaBase, RadioCustom, CheckboxCustom, InputCustom, CheckboxesCustom},
+        components: {TextareaBase, RadioCustom, CheckboxCustom, InputCustom, CheckboxesCustom, InputNumber},
         data(){
             return{
                 checkboxesObj: {
@@ -169,8 +182,8 @@
                     description: '',
                     variants: {}
                 },
+                submitStatus: null,
                 numberIsValid: true,
-                errorName: false,
                 errorEmail: false,
                 errorTel: false,
                 errorAge: false,
@@ -181,8 +194,24 @@
                 pattern: /^\([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}/g
             }
         },
+        validations: {
+          formData: {
+            name: {
+              required,
+              minLength: minLength(2)
+            },
+            email: {
+              required,
+              email
+            },
+            phoneNumber: {
+              isValidNumber
+            }
+          }
+
+        },
         methods: {
-            validation(){
+          validation(){
                 let valid = true;
                 if(this.formData.name.length === 0) {
                     valid = false;
@@ -207,12 +236,25 @@
                 if(valid) alert('congratulations!!!');
                 console.log('validation');
             },
-            validNumber(){
-                this.numberIsValid = this.pattern.test(this.formData.tel)
-            },
-            variantsChange(obj){
-              this.formData.variants = Object.assign({}, obj);
+          submit() {
+            console.log('submit!')
+            this.$v.$touch()
+            if (this.$v.$invalid) {
+              this.submitStatus = 'ERROR'
+            } else {
+              // do your submit logic here
+              this.submitStatus = 'PENDING'
+              setTimeout(() => {
+                this.submitStatus = 'OK'
+              }, 500)
             }
+          },
+          validNumber(){
+              this.numberIsValid = this.pattern.test(this.formData.tel)
+          },
+          variantsChange(obj){
+            this.formData.variants = Object.assign({}, obj);
+          }
         },
     }
 </script>

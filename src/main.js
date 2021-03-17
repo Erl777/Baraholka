@@ -6,6 +6,7 @@ import store from './store';
 import currencyFilter from './filters/currency.filter';
 import dateFilter from './filters/date.filter';
 import axios from 'axios';
+import Vuelidate from 'vuelidate';
 
 Vue.config.productionTip = false;
 const delay = (ms) => new Promise(res => setTimeout(res, ms));
@@ -22,6 +23,8 @@ axios.get = async url => {
       .catch(error => reject(error));
   }));
 };
+
+Vue.use(Vuelidate)
 
 Vue.filter('currency', currencyFilter);
 Vue.filter('date', dateFilter);
