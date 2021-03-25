@@ -19,7 +19,7 @@ function generateToken(){
 app.use(function (req, res, next) {
     var origins = [
         'http://localhost:8080',
-        'http://localhost:3000',
+        'http://localhost:7007',
     ];
 
     for(var i = 0; i < origins.length; i++){
@@ -435,6 +435,6 @@ app.put("/api/users/edit", jsonParser, function(req, res){
     }
 });
 
-app.listen(3000, function(){
+app.listen(7007, function(){
     console.log("Сервер ожидает подключения...");
 });

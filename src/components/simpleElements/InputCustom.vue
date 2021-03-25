@@ -5,6 +5,7 @@
       :type="type"
       v-on="listeners"
       :value="value"
+      :placeholder="placeholder"
     >
   </label>
 </template>
@@ -15,7 +16,7 @@
         props: {
             value: {
               type: String,
-              default: '18'
+              default: ''
             },
             title: {
                 type: String,
@@ -28,6 +29,10 @@
             pattern:{
                 type: String,
                 default: ''
+            },
+            placeholder: {
+              type: String,
+              default: ''
             }
         },
         computed: {

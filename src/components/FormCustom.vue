@@ -29,6 +29,7 @@
       <input-custom
         type="tel"
         title="Телефон"
+        :placeholder="'(099) 222-23-32'"
         v-model="$v.formData.phoneNumber.$model"
         :class="{ 'invalid': $v.formData.phoneNumber.$error }"
       />
@@ -142,13 +143,10 @@
     import CheckboxesCustom from "@/components/simpleElements/CheckboxesCustom";
     import TextareaBase from "@/components/simpleElements/textareaBase";
     import InputNumber from "@/components/simpleElements/InputNumber";
-    import { required, minLength, email } from 'vuelidate/lib/validators';
-    const isValidNumber = (value) => {
-        const pattern = /^\([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}/g
-        console.log(value, typeof value)
-        console.log(pattern.test(value))
-        return pattern.test(value)
-    }
+    import { required, minLength, email, helpers } from 'vuelidate/lib/validators';
+
+    const isValidNumber = helpers.regex('isValidNumber', /^\([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}/g)
+
     export default {
         name: "FormCustom",
         components: {TextareaBase, RadioCustom, CheckboxCustom, InputCustom, CheckboxesCustom, InputNumber},
@@ -174,7 +172,7 @@
                 formData: {
                     name: '',
                     email: '',
-                    tel: '',
+                    phoneNumber: '',
                     // perfectTel: '(099) 222-23-32',
                     age: '5',
                     radio: null,
@@ -184,8 +182,6 @@
                 },
                 submitStatus: null,
                 numberIsValid: true,
-                errorEmail: false,
-                errorTel: false,
                 errorAge: false,
                 errorTextarea: false,
                 errorRadio: false,
@@ -205,6 +201,7 @@
               email
             },
             phoneNumber: {
+              required,
               isValidNumber
             }
           }
@@ -248,9 +245,6 @@
                 this.submitStatus = 'OK'
               }, 500)
             }
-          },
-          validNumber(){
-              this.numberIsValid = this.pattern.test(this.formData.tel)
           },
           variantsChange(obj){
             this.formData.variants = Object.assign({}, obj);
