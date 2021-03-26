@@ -43,9 +43,8 @@
       <input-custom
         type="number"
         title="Возраст"
-        v-model="formData.age"
-        @focus="errorAge = false"
-        :class="{'invalid': errorAge}"
+        v-model="$v.formData.age.$model"
+        :class="{ 'invalid': $v.formData.age.$error }"
       />
 <!--      <input-number-->
 <!--        title="Возраст"-->
@@ -54,7 +53,7 @@
 <!--        :class="{'invalid': errorAge}"-->
 <!--      />-->
       <small
-        v-if="errorAge"
+        v-if="$v.formData.age.$error"
         class="error-message"
       >
         Введите свой возраст
@@ -143,7 +142,7 @@
     import CheckboxesCustom from "@/components/simpleElements/CheckboxesCustom";
     import TextareaBase from "@/components/simpleElements/textareaBase";
     import InputNumber from "@/components/simpleElements/InputNumber";
-    import { required, minLength, email, helpers } from 'vuelidate/lib/validators';
+    import { required, minLength, email, helpers, minValue, numeric } from 'vuelidate/lib/validators';
 
     const isValidNumber = helpers.regex('isValidNumber', /^\([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}/g)
 
@@ -182,7 +181,6 @@
                 },
                 submitStatus: null,
                 numberIsValid: true,
-                errorAge: false,
                 errorTextarea: false,
                 errorRadio: false,
                 errorCheckboxes: false,
@@ -203,6 +201,11 @@
             phoneNumber: {
               required,
               isValidNumber
+            },
+            age: {
+              required,
+              minValue: minValue(14),
+              numeric
             }
           }
 

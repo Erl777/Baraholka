@@ -21,6 +21,10 @@
                 type: String,
                 default: ''
             },
+            minValue: {
+              type: Number,
+              default: 0
+            }
         },
         computed: {
             listeners() {
