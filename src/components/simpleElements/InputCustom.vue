@@ -39,17 +39,7 @@
             listeners() {
                 return {
                     ...this.$listeners,
-                    // input: event => this.$emit('input', event.target.value),
-                    input: event => {
-                        if(this.type === 'number'){
-                            let minValue = 0;
-                            let value = event.target.value;
-                            value >= minValue ? this.$emit('input', event.target.value) : event.target.value = minValue;
-                        }
-                        else {
-                            this.$emit('input', event.target.value)
-                        }
-                    } ,
+                    input: event => this.$emit('input', event.target.value),
                 };
             },
         },

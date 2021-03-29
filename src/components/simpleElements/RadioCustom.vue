@@ -5,7 +5,7 @@
       :id="id"
       type="radio"
       :name="name"
-      :value="inputValue"
+      :value="radio"
     >
     <label :for="id">{{title}}</label>
   </div>
@@ -18,8 +18,8 @@
           name: {
               type: String
           },
-          inputValue: {
-              type: [String, Number]
+          radio: {
+              type: [Boolean]
           },
           title: {
               type: String
@@ -37,7 +37,9 @@
             listeners() {
                 return {
                     ...this.$listeners,
-                    input: event => this.$emit('input', event.target.value),
+                    input: event => {
+                      this.$emit('input', this.title)
+                    },
                 };
             },
         },

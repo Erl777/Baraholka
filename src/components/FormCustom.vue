@@ -46,12 +46,6 @@
         v-model="$v.formData.age.$model"
         :class="{ 'invalid': $v.formData.age.$error }"
       />
-<!--      <input-number-->
-<!--        title="Возраст"-->
-<!--        v-model="formData.age"-->
-<!--        @focus="errorAge = false"-->
-<!--        :class="{'invalid': errorAge}"-->
-<!--      />-->
       <small
         v-if="$v.formData.age.$error"
         class="error-message"
@@ -60,68 +54,52 @@
       </small>
 
       <checkbox-custom
-        v-model="formData.checkbox"
+        v-model="$v.formData.agreeWithTheTerms.$model"
         :label="'Я согласен с условиями'"
-        @click="errorCheckbox = false"
       />
       <small
-        v-if="errorCheckbox"
+        v-if="$v.formData.agreeWithTheTerms.$error"
         class="error-message"
       >
         Вы не согласились с условиями
       </small>
 
+      <p>Выберите вашу любимую категорию</p>
       <radio-custom
-        v-model="formData.radio"
-        title="Радио1"
-        name="radio"
-        inputValue="Радио1"
-        id="radio1"
-        @click="errorRadio = false"
-      />
+        v-for="(radio, key, index) in radiosObj"
+        :key="radiosObj[key].title"
+        :name="'radio'"
+        :radio="radiosObj[key].radio"
+        :title="radiosObj[key].title"
+        :id="key + radiosObj[key].title"
+        v-model="formData.category"
 
-      <radio-custom
-        v-model="formData.radio"
-        title="Радио2"
-        name="radio"
-        inputValue="Радио2"
-        id="radio2"
-        @click="errorRadio = false"
-      />
-
-      <radio-custom
-        v-model="formData.radio"
-        title="Радио3"
-        name="radio"
-        inputValue="Радио3"
-        id="radio3"
-        @click="errorRadio = false"
       />
       <small
-        v-if="errorRadio"
+        v-if="$v.formData.category.$error"
         class="error-message"
       >
         Выберите один из вариантов
       </small>
 
       <textarea-base
-        v-model="formData.description"
+        v-model="$v.formData.description.$model"
         @focus="errorTextarea = false"
       />
       <small
-        v-if="errorTextarea"
+        v-if="$v.formData.description.$error"
         class="error-message"
       >
         Введите описание
       </small>
 
+      <p>Выберите один или более фруктов</p>
       <checkboxes-custom
         :value="checkboxesObj"
         @variantsChange="variantsChange"
-        @input="errorCheckboxes = false"
       />
       <small
-        v-if="errorCheckboxes"
+        v-if="$v.formData.fruits.$error"
         class="error-message"
       >
         Выберите хоть один из вариантов
@@ -142,13 +120,13 @@
     import CheckboxesCustom from "@/components/simpleElements/CheckboxesCustom";
     import TextareaBase from "@/components/simpleElements/textareaBase";
     import InputNumber from "@/components/simpleElements/InputNumber";
-    import { required, minLength, email, helpers, minValue, numeric } from 'vuelidate/lib/validators';
+    import { required, minLength, email, helpers, minValue, numeric, sameAs } from 'vuelidate/lib/validators';
 
     const isValidNumber = helpers.regex('isValidNumber', /^\([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}/g)
 
     export default {
         name: "FormCustom",
-        components: {TextareaBase, RadioCustom, CheckboxCustom, InputCustom, CheckboxesCustom, InputNumber},
+        components: { TextareaBase, RadioCustom, CheckboxCustom, InputCustom, CheckboxesCustom, InputNumber},
         data(){
             return{
                 checkboxesObj: {
@@ -168,6 +146,23 @@
                     checked: false
                   }
                 },
+                radiosObj: [
+                   {
+                    title: 'Авто',
+                    value: 'auto',
+                     radio: false,
+                  },
+                   {
+                    title: 'Мебель',
+                    value: 'furniture',
+                     radio: false,
+                  },
+                   {
+                    title: 'Бижутерия',
+                    value: 'jewelry',
+                     radio: false
+                  }
+                ],
                 formData: {
                     name: '',
                     email: '',
@@ -175,16 +170,12 @@
                     // perfectTel: '(099) 222-23-32',
                     age: '5',
                     radio: null,
-                    checkbox: false,
+                    category: null,
+                    agreeWithTheTerms: false,
                     description: '',
-                    variants: {}
+                    fruits: []
                 },
                 submitStatus: null,
-                numberIsValid: true,
-                errorTextarea: false,
-                errorRadio: false,
-                errorCheckboxes: false,
-                errorCheckbox: false,
                 pattern: /^\([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}/g
             }
         },
@@ -206,38 +197,28 @@
               required,
               minValue: minValue(14),
               numeric
+            },
+            agreeWithTheTerms: {
+              required,
+              agree: sameAs(() => true)
+            },
+            description: {
+              required,
+              minLength: minLength(10)
+            },
+            fruits: {
+              required
+            },
+            category: {
+              required
             }
+
           }
 
         },
         methods: {
-          validation(){
-                let valid = true;
-                if(this.formData.name.length === 0) {
-                    valid = false;
-                    this.errorName = true;
-                }
-                if(this.formData.email.length === 0) {
-                    valid = false;
-                    this.errorEmail = true;
-                }
-                if(this.formData.age.length === 0 && this.numberIsValid) {
-                    valid = false;
-                    this.errorAge = true;
-                }
-                if(this.formData.tel.length === 0) {
-                    valid = false;
-                    this.errorTel = true;
-                }
-                if (!this.formData.checkbox) this.errorCheckbox = true;
-                if(this.formData.radio === null) this.errorRadio = true;
-                if(this.formData.description.length === 0) this.errorTextarea = true;
-                if(this.formData.variants.length === 0) this.errorCheckboxes = true;
-                if(valid) alert('congratulations!!!');
-                console.log('validation');
-            },
+
           submit() {
-            console.log('submit!')
             this.$v.$touch()
             if (this.$v.$invalid) {
               this.submitStatus = 'ERROR'
@@ -249,9 +230,17 @@
               }, 500)
             }
           },
+
           variantsChange(obj){
-            this.formData.variants = Object.assign({}, obj);
+            let array = []
+
+            Object.entries(obj).forEach((elem) => {
+              if(elem[1].checked) array.push(elem[1].name)
+            })
+
+            this.formData.fruits = array;
           }
+
         },
     }
 </script>
@@ -280,6 +269,9 @@
     padding: 5px;
     border-radius: 10px;
     margin: 0 auto;
+  }
+  p{
+    margin: 10px 0;
   }
 </style>
 
