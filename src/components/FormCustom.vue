@@ -65,15 +65,8 @@
       </small>
 
       <p>Выберите вашу любимую категорию</p>
-      <radio-custom
-        v-for="(radio, key, index) in radiosObj"
-        :key="radiosObj[key].title"
-        :name="'radio'"
-        :radio="radiosObj[key].radio"
-        :title="radiosObj[key].title"
-        :id="key + radiosObj[key].title"
-        v-model="formData.category"
-
+      <radios-custom
+        v-model="radiosObj"
       />
       <small
         v-if="$v.formData.category.$error"
@@ -116,7 +109,7 @@
 <script>
     import InputCustom from "./simpleElements/InputCustom";
     import CheckboxCustom from "./simpleElements/CheckboxCustom";
-    import RadioCustom from "./simpleElements/RadioCustom";
+    import RadiosCustom from "./simpleElements/RadiosCustom";
     import CheckboxesCustom from "@/components/simpleElements/CheckboxesCustom";
     import TextareaBase from "@/components/simpleElements/textareaBase";
     import InputNumber from "@/components/simpleElements/InputNumber";
@@ -126,7 +119,7 @@
 
     export default {
         name: "FormCustom",
-        components: { TextareaBase, RadioCustom, CheckboxCustom, InputCustom, CheckboxesCustom, InputNumber},
+        components: { TextareaBase, RadiosCustom, CheckboxCustom, InputCustom, CheckboxesCustom, InputNumber},
         data(){
             return{
                 checkboxesObj: {
@@ -150,17 +143,20 @@
                    {
                     title: 'Авто',
                     value: 'auto',
-                     radio: false,
+                    checked: false,
+                    name: 'category'
                   },
                    {
                     title: 'Мебель',
                     value: 'furniture',
-                     radio: false,
+                    checked: true,
+                    name: 'category'
                   },
                    {
                     title: 'Бижутерия',
                     value: 'jewelry',
-                     radio: false
+                    checked: false,
+                    name: 'category'
                   }
                 ],
                 formData: {
@@ -232,11 +228,11 @@
           },
 
           variantsChange(obj){
-            let array = []
+            let array = [];
 
             Object.entries(obj).forEach((elem) => {
               if(elem[1].checked) array.push(elem[1].name)
-            })
+            });
 
             this.formData.fruits = array;
           }

@@ -41,15 +41,13 @@
         watch: {
           value: {
             deep: true,
+            immediate: true,
 
             handler(){
               this.$emit('variantsChange', this.value)
             }
           }
         },
-      created() {
-        this.$emit('variantsChange', this.value)
-      }
     }
 </script>
 
