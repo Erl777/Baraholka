@@ -1,6 +1,6 @@
 <template>
   <input
-    type="password"
+    :type="type"
     v-bind="$props"
     v-on="listeners"
   >
@@ -18,6 +18,9 @@ export default {
       type: String,
       default: 'test-class-name',
     },
+    type: {
+      default: 'text'
+    }
   },
   computed: {
     listeners() {

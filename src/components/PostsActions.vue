@@ -4,11 +4,10 @@
     <div class="filteringName">
 
       <input-base
-        :value="filtering.search"
+        v-model="filtering.name"
         :name="'search'"
         :placeholder="'Поиск...'"
         :inputKey="'search'"
-        @getInputValue = "emitInputValue"
       />
 
       <button-base
@@ -33,10 +32,10 @@
         Рубрика:
         <select-base
           :name="'rubric'"
-          :value="filtering.rubric"
-          :options="['Выберите рубрику', 'Электроника', 'Авто']"
+          v-model="filtering.rubric"
+          :options="{ electronic: 'Электроника', auto: 'Авто', furniture: 'Мебель'}"
           :select-key="'rubric'"
-          @getSelectValue = "emitInputValue"
+
         />
       </label>
 
@@ -44,10 +43,10 @@
         Сортировка:
         <select-base
           :name="'sortingBy'"
-          :value="filtering.sortingBy"
-          :options="['Самые дешевые', 'Самые дорогие']"
+          v-model="filtering.sortingBy"
+          :options="{cheap: 'Самые дешевые', expensive: 'Самые дорогие'}"
           :select-key="'sortingBy'"
-          @getSelectValue = "emitInputValue"
+
         />
       </label>
 
@@ -55,22 +54,25 @@
         Цена:
         <input-base
           class="minPrice"
-          :value="filtering.minPrice"
+          v-model="filtering.minPrice"
           :name="'minPrice'"
           :placeholder="'от'"
           :inputKey="'minPrice'"
-          @getInputValue = "getPrice"
+
         />
 
         <input-base
           class="maxPrice"
-          :value="filtering.maxPrice"
+          v-model="filtering.maxPrice"
           :name="'maxPrice'"
           :placeholder="'до'"
           :inputKey="'maxPrice'"
-          @getInputValue = "getPrice"
+
         />
       </label>
+
+      <button type="button" @click="emitFilters" class="btn-find">Найти</button>
+      <button type="button" @click="$emit('clearFilters')" class="btn-find orange">Сброс</button>
 
     </div>
 
@@ -90,23 +92,27 @@ export default {
     prop: 'filtering',
     event: 'input',
   },
+  data(){
+    return{
+        filtering: {
+          name: '',
+          minPrice: '',
+          maxPrice: '',
+          rubric: '',
+          sortingBy: '',
+        },
+    }
+  },
   props: {
-    filtering: {
-      type: Object,
-      default: () => ({
-        search: '',
-        minPrice: 0,
-        maxPrice: 0,
-        rubric: '',
-        sortingBy: '',
-      }),
-    },
     activeComponent: {
       type: String,
-      default: '',
+      default: 'PostGrid',
     },
   },
   methods: {
+    emitFilters(){
+        this.$emit('filtersChanged', this.filtering)
+    },
     getPrice(data){
         let {val, key} = data;
         this.emitInput(this.getNumber(val), key);
@@ -117,6 +123,7 @@ export default {
      * @param {object} data
      */
     emitInputValue(data){
+        console.log(data)
         this.emitInput(data.val, data.key);
     },
     /**
@@ -212,4 +219,16 @@ export default {
     margin-left: 0;
   }
 }
+  .btn-find{
+    background-color: green;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 12px rgb(77 77 77 / 75%);
+  }
+  .orange{
+    background-color: darkorange;
+  }
 </style>

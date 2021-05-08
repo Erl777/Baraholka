@@ -39,8 +39,55 @@ app.use(function (req, res, next) {
 app.get("/api/posts", function(req, res){
 
     var content = fs.readFileSync("posts.json", "utf8");
-    var users = JSON.parse(content);
-    res.send(users);
+    var posts = JSON.parse(content);
+    res.send(posts);
+});
+
+app.get("/api/posts/sort/:rubric/:minPrice/:maxPrice/:sortingType/:name", function(req, res){
+
+  var rubric = req.params.rubric;
+  var minPrice = req.params.minPrice;
+  var maxPrice = req.params.maxPrice;
+  var sortingType = req.params.sortingType;
+  var name = req.params.name;
+
+  var content = fs.readFileSync("posts.json", "utf8");
+  var posts = JSON.parse(content);
+
+  function filterRubric(arr) {
+    if(rubric !== 'default') {
+      return arr.filter(item => item.rubric === rubric)
+    }
+    else return arr
+  }
+  function filterMinPrice(arr) {
+    if(minPrice !== 'default') {
+      return arr.filter(item => parseInt(item.price, 10) >= parseInt(minPrice, 10))
+    }
+    else return arr
+  }
+  function filterMaxPrice(arr) {
+    if(maxPrice !== 'default') {
+      return arr.filter(item => parseInt(item.price, 10) <= parseInt(maxPrice, 10))
+    }
+    else return arr
+  }
+  function filterByName(arr) {
+    if(name !== 'default') {
+      return arr.filter(item => item.title.includes(name) )
+    }
+    else return arr
+  }
+  function sortingPosts(arr) {
+    var sorting = arr.sort((a,b) => (parseInt(a.price, 10)  > parseInt(b.price, 10) ) ? 1 : (( parseInt(b.price, 10)  > parseInt(a.price, 10) ) ? -1 : 0))
+    if(sortingType === "Самые дорогие"){
+      sorting = sorting.reverse();
+    }
+    return sorting
+  }
+  var result = sortingPosts(  filterMaxPrice( filterMinPrice( filterByName(filterRubric(posts)) ) )   )
+  // console.log(result);
+  res.send(result);
 });
 
 // получение одного пользователя по id

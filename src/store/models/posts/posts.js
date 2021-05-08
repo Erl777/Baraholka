@@ -22,6 +22,15 @@ export default {
                     return ` Постов нет `
                 });
         },
+        async getPostsSortedByFilters({commit}, params) {
+          const {minPrice, maxPrice, rubric, sortingBy, name} = params;
+          return await api
+            .get(`/posts/sort/${rubric}/${minPrice}/${maxPrice}/${sortingBy}/${name}`  )
+          .catch(error => {
+              console.log("error", error);
+            return ` Постов нет `
+          });
+        },
         async getPost({dispatch, commit}, id) {
             return await api
                 .get("/post/" + id )

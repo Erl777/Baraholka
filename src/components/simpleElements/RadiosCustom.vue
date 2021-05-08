@@ -25,17 +25,15 @@
               required: true
           }
         },
-        data(){
-            return {
-              clearCheckedItem(){
-                  this.value.forEach((obj) => {
-                      if (obj.checked) obj.checked = false;
-                  })
-              },
-              checkNewItem(index){
-                  this.clearCheckedItem();
-                  this.value[index].checked = true;
-              }
+        methods: {
+            clearCheckedItem(){
+                this.value.forEach((obj) => {
+                    if (obj.checked) obj.checked = false;
+                })
+            },
+            checkNewItem(index){
+                this.clearCheckedItem();
+                this.value[index].checked = true;
             }
         },
         computed: {

@@ -2,7 +2,7 @@
   <select
     :name="name"
     :value="value"
-    @input="emitData({val: $event.target.value, selectKey})"
+    @input="emitData"
   >
     <option
       v-for="item in options"
@@ -27,7 +27,7 @@
                 default: ''
             },
             options: {
-                type: Array,
+                type: Object,
                 default: []
             },
             selectKey: {
@@ -36,9 +36,10 @@
             }
         },
         methods: {
-            emitData(data){
-                let {val, selectKey: key} = data;
-                this.$emit('getSelectValue', {val, key})
+            emitData(event){
+
+               this.$emit('input', event.target.value)
+
             }
         }
     }

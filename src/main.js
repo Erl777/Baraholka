@@ -9,20 +9,11 @@ import axios from 'axios';
 import Vuelidate from 'vuelidate';
 
 Vue.config.productionTip = false;
-// const delay = (ms) => new Promise(res => setTimeout(res, ms));
-// axios.get = async url => {
-//   return new Promise(((resolve, reject) => {
-//     delay(3000)
-//       .then(() => {
-//         if (url === '/url') {
-//           resolve('done')
-//         } else {
-//           throw Error('BAM');
-//         }
-//       })
-//       .catch(error => reject(error));
-//   }));
-// };
+axios.interceptors.response.use((response) => {
+  return response.data;
+}, function (error) {
+  return Promise.reject(error);
+});
 
 Vue.use(Vuelidate)
 

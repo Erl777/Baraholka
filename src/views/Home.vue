@@ -4,9 +4,9 @@
     <PostsActions
       :active-component="currentComponent"
 
-      v-model="filtering"
-
       @changeComponent="changeActiveComponent"
+      @filtersChanged="getFilteredData"
+      @clearFilters="clearFilters"
     />
 
     <div class="posts-container" :class="{ block : currentComponent === 'PostLine' }">
@@ -15,7 +15,7 @@
 
       <component
         v-else
-        v-for="post in posts"
+        v-for="post in allPosts"
         :key="post.postId"
         :is="currentComponent"
         :title="post.title"
@@ -53,13 +53,6 @@ export default {
       currentComponent: 'PostGrid',
       allPosts: [],
       loading: true,
-      filtering: {
-        search: '',
-        minPrice: 0,
-        maxPrice: 0,
-        rubric: '',
-        sortingBy: '',
-      },
       firstTime: true,
       showEmpty: false,
     };
@@ -76,84 +69,34 @@ export default {
       storePosts: 'getPosts',
     }),
 
-    posts() {
-      this.showEmpty = false;
-      let filteredRes = [];
-      if (this.filtering.search !== '') {
-        filteredRes = this.allPosts.filter(el => el.title.includes(this.filtering.search));
-      }
-      if (this.filtering.minPrice > 0 && this.filtering.maxPrice === null) {
-        if (filteredRes.length > 0) {
-          filteredRes = filteredRes.filter(el => el.price >= this.filtering.minPrice);
-        } else {
-          filteredRes = this.allPosts.filter(el => el.price >= this.filtering.minPrice);
-        }
-      }
-      if (this.filtering.minPrice === 0 && this.filtering.maxPrice !== null) {
-        if (filteredRes.length > 0) {
-          filteredRes = filteredRes.filter(el => el.price <= this.filtering.maxPrice);
-        } else {
-          filteredRes = this.allPosts.filter(el => el.price <= this.filtering.maxPrice);
-        }
-      }
-      if (this.filtering.minPrice > 0 && this.filtering.maxPrice !== null) {
-        if (filteredRes.length > 0) {
-          filteredRes = filteredRes.filter(el => el.price >= this.filtering.minPrice && el.price <= this.filtering.maxPrice);
-        } else {
-          filteredRes = this.allPosts.filter(el => el.price >= this.filtering.minPrice && el.price <= this.filtering.maxPrice);
-        }
-      }
-      if (this.filtering.rubric !== '') {
-        if (filteredRes.length > 0) {
-          filteredRes = filteredRes.filter(el => el.rubric.includes(this.filtering.rubric));
-        } else {
-          filteredRes = this.allPosts.filter(el => el.rubric.includes(this.filtering.rubric));
-        }
-      }
-      if (this.filtering.sortingBy !== '') {
-        if (filteredRes.length > 0) {
-          if (this.filtering.sortingBy === 'Самые дешевые') {
-            filteredRes = filteredRes.sort(function(a, b) {
-              return a.price - b.price;
-            });
-          }
-          if (this.filtering.sortingBy === 'Самые дорогие') {
-            filteredRes = filteredRes.sort(function(a, b) {
-              return a.price - b.price;
-            }).reverse();
-          }
-
-        } else {
-          if (this.filtering.sortingBy === 'Самые дешевые') {
-            filteredRes = this.allPosts.sort(function(a, b) {
-              return a.price - b.price;
-            });
-          }
-          if (this.filtering.sortingBy === 'Самые дорогие') {
-            filteredRes = this.allPosts.sort(function(a, b) {
-              return a.price - b.price;
-            }).reverse();
-          }
-        }
-      }
-      if (filteredRes.length === 0 && !this.firstTime) {
-        // тут нужно выводить, что нет постов, если длинна 0
-        console.log('Пусто');
-        this.showEmpty = true;
-      }
-      if (filteredRes.length === 0 && this.firstTime) {
-        // тут нужно выводить, что нет постов, если длинна 0
-        filteredRes = this.allPosts;
-        this.firstTime = false;
-      }
-      return filteredRes;
-      // return this.allPosts.filter(item => item.price > this.filterArgument );
-    },
+    filteredPosts(){
+        return this.allPosts.filter(post => post.title)
+    }
   },
   methods: {
     changeActiveComponent(componentType) {
       this.currentComponent = componentType;
     },
+    async clearFilters(){
+        this.loading = true;
+        this.allPosts = await this.$store.dispatch('getPosts');
+        this.loading = false;
+    },
+    async getFilteredData(data){
+        this.loading = true;
+        let newData = this.addProxy(Object.assign({}, data));
+        const result = await this.$store.dispatch('getPostsSortedByFilters', newData)
+        this.allPosts = result.data;
+        this.loading = false;
+    },
+    addProxy(obj){
+        return new Proxy(obj, {
+            get(target, prop){
+                if(target[prop] === '' ) return 'default';
+                else return target[prop]
+            }
+        })
+    }
   },
 };
 </script>

@@ -229,10 +229,13 @@
 
           variantsChange(obj){
             let array = [];
-
-            Object.entries(obj).forEach((elem) => {
-              if(elem[1].checked) array.push(elem[1].name)
-            });
+            // Object.entries(obj).forEach((elem) => {
+            //   if(elem[1].checked) array.push(elem[1].name)
+            // });
+            for (let key in obj){
+                let elem = obj[key];
+                if(elem.checked) array.push(elem.name)
+            }
 
             this.formData.fruits = array;
           }
