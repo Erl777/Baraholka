@@ -6,8 +6,8 @@
       <input
         :id="item.name"
         type="checkbox"
+        v-model="checkedItemsNames"
         :value="item.value"
-        @click="item.checked = !item.checked"
         :checked="item.checked"
       >
 
@@ -24,6 +24,11 @@
 <script>
     export default {
         name: "CheckboxesCustom",
+        data() {
+            return {
+               checkedItemsNames: []
+            }
+        },
         props: {
             value: {
                 type: Object,
@@ -39,15 +44,15 @@
             }
         },
         watch: {
-          value: {
-            deep: true,
-            immediate: true,
+            checkedItemsNames: {
+                deep: true,
+                immediate: true,
 
-            handler(){
-              this.$emit('variantsChange', this.value)
+                handler(){
+                  this.$emit('variantsChange', this.checkedItemsNames)
+                }
             }
-          }
-        },
+        }
     }
 </script>
 
