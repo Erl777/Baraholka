@@ -1,10 +1,17 @@
 import { mount } from '@vue/test-utils'
-import buttonBase from "@/components/simpleElements/buttonBase";
+import InputCustom from "../components/simpleElements/InputCustom";
 
-describe('buttonBase', () => {
-  test('является экземпляром Vue', () => {
-    const wrapper = mount(buttonBase)
-    expect(wrapper.isVueInstance()).toBeTruthy()
+describe('InputCustom', () => {
+  test('эмитит измененное верное значение инпута', async () => {
+
+    const wrapper = mount(InputCustom)
+    const textInput = wrapper.find('input')
+    await textInput.setValue('value')
+    // проверка, что событие было вызвано
+    expect(wrapper.emitted('input')).toBeTruthy()
+    // проверка, что с событием были переданы определённые данные
+    expect(wrapper.emitted('input')[0]).toEqual(['value'])
+
   })
 })
 
