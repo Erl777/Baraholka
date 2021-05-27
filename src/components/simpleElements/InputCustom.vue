@@ -6,6 +6,7 @@
       v-on="listeners"
       :value="value"
       :placeholder="placeholder"
+      :min="minValue"
     >
   </label>
 </template>
@@ -15,7 +16,7 @@
         name: "InputCustom",
         props: {
             value: {
-              type: String,
+              type: [String, Number],
               default: ''
             },
             title: {
@@ -33,6 +34,10 @@
             placeholder: {
               type: String,
               default: ''
+            },
+            minValue: {
+              type: Number,
+              default: 0
             }
         },
         computed: {

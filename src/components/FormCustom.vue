@@ -98,6 +98,8 @@
         Выберите хоть один из вариантов
       </small>
 
+      <input-with-only-number />
+
       <button class="save" type="submit">Сохранить</button>
       <p class="typo__p" v-if="submitStatus === 'OK'">Thanks for your submission!</p>
       <p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p>
@@ -112,14 +114,15 @@
     import RadiosCustom from "./simpleElements/RadiosCustom";
     import CheckboxesCustom from "@/components/simpleElements/CheckboxesCustom";
     import TextareaBase from "@/components/simpleElements/textareaBase";
-    import InputNumber from "@/components/simpleElements/InputNumber";
+    import inputOnlyNumber from "@/components/simpleElements/inputOnlyNumber";
     import { required, minLength, email, helpers, minValue, numeric, sameAs } from 'vuelidate/lib/validators';
 
     const isValidNumber = helpers.regex('isValidNumber', /^\([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}/g)
+    let inputWithOnlyNumber = inputOnlyNumber(InputCustom)
 
     export default {
         name: "FormCustom",
-        components: { TextareaBase, RadiosCustom, CheckboxCustom, InputCustom, CheckboxesCustom, InputNumber},
+        components: { TextareaBase, RadiosCustom, CheckboxCustom, InputCustom, CheckboxesCustom, inputWithOnlyNumber},
         data(){
             return{
                 checkboxesObj: {

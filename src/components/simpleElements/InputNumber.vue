@@ -5,6 +5,7 @@
       type="number"
       v-on="listeners"
       :value="value"
+      :min="minValue"
     >
   </label>
 </template>
